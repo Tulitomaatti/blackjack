@@ -1,0 +1,2 @@
+# pvm aika kuvaus
+6.9. 2h Kurssille ilmoittauduttu ja kurssi aloitettu. Asennettu ja viritelty netbeans ja git kuntoon.

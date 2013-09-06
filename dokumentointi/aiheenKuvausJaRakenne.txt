@@ -1,0 +1,22 @@
+Aihe: Blackjack -korttipeli
+Toteutetaan blackjack, jota voi pelata tietokonetta vastaan joko yksin tai tietokonepelaajien kanssa. 
+
+Käyttäjät: Pelaajat
+
+Toiminnot:
+
+* Pelaajien hallinta
+	- Pelaajien luonti ja poistaminen
+	- Pelaajatietojen vienti ja tuonti
+* Pelin asetukset (säännöt (pakkojen määrä ym.), aloitusraha, maks/min panokset)
+* Pelin luominen
+	- Pelaajien valinta 
+* Pelaaminen
+	- Panostaminen
+	- Kierroksen lopetus omalta osalta
+	- Lisää kortteja
+	- Tuplaaminen
+	- Jakaminen 
+	- Vakuutus
+
+* Tilastotietoa pelin aikana (korttien laskenta, voitto-odotus, paras taktiikka) 
