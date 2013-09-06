@@ -1,5 +1,9 @@
 Aihe: Blackjack -korttipeli
-Toteutetaan blackjack, jota voi pelata tietokonetta vastaan joko yksin tai tietokonepelaajien kanssa. 
+
+Blackjack korttipeli pelattavaksi yksin, kaverin kanssa hotseattina tai tietokoneen kanssa tietokonetta vastaan. Pelissä on tarkoitus saada oman käden korttien yhteenlaskettu pistemäärä mahdollisimman lähelle 21:tä, mutta ei sen yli. Pelaajille jaetaan aluksi 2 korttia, jonka jälkeen pelaaja voi pyytää lisää kortteja tai lopettaa. Jakaja ottaa lisää kortteja käteensä, kunnes jakajan käden pistemäärä on 17 tai enemmän. Pelaaja(t) voittaa, jos pelaajan pistemäärä on korkeampi kuin jakajan, tai jos jakajan käsi menee yli sallitun pistemäärän (21). Jokaisella kierroksella pelaaja asettaa panoksen. Pelaaja saa panoksen tuplana takaisin, jos pelaaja voittaa. Tasapelissä panos palautetaan, ja jakajan voittaessa pelaaja menettää panoksen. 
+
+Perus pelin lisäksi korttipeli tarjoaa tilastotietoja meneillään olevasta pelistä. 
+
 
 Käyttäjät: Pelaajat
 
