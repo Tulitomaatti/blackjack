@@ -25,16 +25,16 @@ class Game(object):
 	def deal(self):
 		for i in xrange(2):
 			print "Dealer draws a card."
-			self.dealer.handList[self.dealer.currentHand].putCard(self.pack.drawCard())
+			self.dealer.handList[0].putCard(self.pack.drawCard())
 
-			for player in self.players:
-				print "Player", player, "draws a card. "
-				player.handList[player.currentHand].putCard(self.pack.drawCard())
+			for plr in self.players:
+				print "Player", plr, "draws a card."
+				plr.handList[plr.currentHand].putCard(self.pack.drawCard())
 
 
-		print self.dealer.handList[self.dealer.currentHand]
-		for player in self.players:
-			print player.handList[player.currentHand]
+		# print self.dealer.handList[self.dealer.currentHand]
+		# for player in self.players:
+		# 	print player.handList[player.currentHand]
 
 
 	def payout(self):	

@@ -2,13 +2,16 @@
 import cardpackhand
 
 class Player(object):
-	balance = 0.0
-	handList = []
-	currentHand = 0
+
+	def __init__(self):
+		self.balance = 0.0
+		self.handList = []
+		self.handList.append(cardpackhand.Hand())
+		self.currentHand = 0
 
 	def bet(self, bet, handIndex = 0):
 		self.balance -= bet
-		self.handList[self.currentHand].bet = bet
+		self.handList[self.currentHand].bet += bet
 
 		print "Bet", bet
 
@@ -19,11 +22,11 @@ class Player(object):
 
 	def hit(self, pack):
 		print "Hitting a card:",
-		self.handList[self.currentHand].append(pack.drawCard())
+		self.handList[self.currentHand].putCard(pack.drawCard())
 
-	def double(self):
-		self.bet(self.handList[currentHand].bet)
-		self.handList[self.currentHand].append(pack.drawCard())
+	def double(self, pack):
+		self.bet(self.handList[self.currentHand].bet)
+		self.handList[self.currentHand].putCard(pack.drawCard())
 		self.handList[self.currentHand].finalHand = True
 		
 
@@ -32,6 +35,9 @@ class Player(object):
 
 	def insurance(self):
 		pass
+
+	def printCurrentHand(self):
+		print self.handList[self.currentHand]
 
 class HumanPlayer(Player):
 	pass

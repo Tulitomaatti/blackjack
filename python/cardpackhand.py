@@ -18,7 +18,9 @@ class Card(object):
 
 class Pack(object):
 	"""A pack of cards. Can be shuffled, and cards can be taken and added."""
-	cardStack = []
+
+	def __init__(self):
+		self.cardStack = []
 
 	def shuffle(self):
 		random.shuffle(self.cardStack)
@@ -57,10 +59,14 @@ class Pack(object):
 class Hand(Pack):
 	"""A hand of cards. Tailored for blackjack."""
 
-	bet = 0.0
-	finalHand = False
-	bustedHand = False
-	blackjackHand = False
+	def __init__(self):
+		self.cardStack = []
+
+		self.bet = 0.0
+		self.finalHand = False
+		self.bustedHand = False
+		self.blackjackHand = False
+		self.value = property(self.getValue)
 
 	def getValue(self):
 		value = 0
@@ -69,7 +75,7 @@ class Hand(Pack):
 		return value
 
 	# Feels more elegant than always using some somehand.getHandValue() thing.
-	value = property(getValue)
+	
 
 	def doubleBet(self):
 		self.bet *= 2
@@ -77,7 +83,10 @@ class Hand(Pack):
 	def __str__(self):
 		handString = ''
 		for card in self.cardStack:
-			handString += ', ' + str(card)
+			if (handString == ''):
+				handString += str(card)
+			else:
+				handString += ', ' + str(card)
 
 		return handString
 
