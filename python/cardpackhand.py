@@ -1,21 +1,29 @@
 # -*- coding: utf-8 -*-
 
+import random
+
+suits 	= ["heart", "spade", "club", "diamond"]
+numbers = range(1,14)
+
 class Card(object):
 	"""A playing card defined by it's number & suit"""
-	final int NUMBER
-	final string SUIT
+	NUMBER = 0
+	SUIT = ""
 
 	def __init__(self, number, suit):
 		self.NUMBER = number
 		self.SUIT = suit
+
+	def __str__(self):
+		return self.NUMBER, self.SUIT
 
 
 class Pack(object):
 	"""A pack of cards. Can be shuffled, and cards can be taken and added."""
 	cardStack = []
 
-	def shuffle:
-		self.cardStack.shuffle()
+	def shuffle(self):
+		random.shuffle(self.cardStack)
 
 	def putCard(self, card):
 		self.cardStack.append(card)
@@ -25,7 +33,12 @@ class Pack(object):
 		# cardStack[0] is the bottom of the pack,
 		# cardStack.pop() should return the topmost card.
 		if (amount == 1):
-			return cardStack.pop()
+			card = cardStack.pop()
+
+			print "Drew", card
+
+			return card
+
 		else: 
 			# things that call this with amount > 1 have to be able to accept lists?
 			cardList = []
@@ -39,7 +52,10 @@ class Pack(object):
 class Hand(Pack):
 	"""A hand of cards. Tailored for blackjack."""
 
-	bet = 0
+	bet = 0.0
+	finalHand = False
+	bustedHand = False
+	blackjackHand = False
 
 	def getValue(self):
 		value = 0
@@ -52,6 +68,13 @@ class Hand(Pack):
 
 	def doubleBet(self):
 		self.bet *= 2
+
+	def __str__(self):
+		handString = ''
+		for card in self.cardStack:
+			handString.join(card, ' ')
+
+		return handString
 
 
 
