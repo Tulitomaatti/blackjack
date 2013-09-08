@@ -18,13 +18,18 @@ class Game(object):
 	def betting(self):
 		for player in self.players:
 			player.handList.append(c.Hand())
-			player.bet(float(raw_input("Enter bet:")))
+			player.bet(float(raw_input("Enter bet: ")))
+
+		print "Betting finished."
 
 	def deal(self):
 		for i in xrange(2):
+			print "Dealer draws a card."
 			self.dealer.handList[self.dealer.currentHand].putCard(self.pack.drawCard())
+
 			for player in self.players:
-				player.handList[player.currentHand].append(pack.drawCard())
+				print "Player", player, "draws a card. "
+				player.handList[player.currentHand].putCard(self.pack.drawCard())
 
 
 		print self.dealer.handList[self.dealer.currentHand]
@@ -61,5 +66,7 @@ class Game(object):
 		for suit in c.suits:
 			for number in c.numbers:
 				self.pack.putCard(c.Card(number, suit))
-				self.pack.shuffle()
+			
+	def shufflePack(self):
+		self.pack.shuffle()
 	

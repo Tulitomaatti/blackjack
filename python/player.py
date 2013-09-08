@@ -10,7 +10,7 @@ class Player(object):
 		self.balance -= bet
 		self.handList[self.currentHand].bet = bet
 
-		print "Bet", self.bet
+		print "Bet", bet
 
 	def stand(self, hand):
 		hand.finalHand = True

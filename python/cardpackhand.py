@@ -7,15 +7,13 @@ numbers = range(1,14)
 
 class Card(object):
 	"""A playing card defined by it's number & suit"""
-	NUMBER = 0
-	SUIT = ""
 
 	def __init__(self, number, suit):
 		self.NUMBER = number
 		self.SUIT = suit
 
 	def __str__(self):
-		return self.NUMBER, self.SUIT
+		return str(self.NUMBER) + ' of ' + str(self.SUIT) + 's'
 
 
 class Pack(object):
@@ -28,12 +26,12 @@ class Pack(object):
 	def putCard(self, card):
 		self.cardStack.append(card)
 
-	def drawCard(amount = 1):
+	def drawCard(self, amount = 1):
 		"""Returns the topmost card of the pack. If many cards are requested it returns a list of the topmost cards."""
 		# cardStack[0] is the bottom of the pack,
 		# cardStack.pop() should return the topmost card.
 		if (amount == 1):
-			card = cardStack.pop()
+			card = self.cardStack.pop()
 
 			print "Drew", card
 
@@ -41,6 +39,7 @@ class Pack(object):
 
 		else: 
 			# things that call this with amount > 1 have to be able to accept lists?
+			print "Drawing", amount, "cards."
 			cardList = []
 			for i in xrange(amount):
 				cardList.append(cardStack.pop())
@@ -48,6 +47,12 @@ class Pack(object):
 
 
 	def __len__(self): return len(self.cardStack)
+
+	def printPack(self):
+		for card in self.cardStack:
+			print card
+		print "A total of", len(self.cardStack), "cards."
+
 
 class Hand(Pack):
 	"""A hand of cards. Tailored for blackjack."""
@@ -72,7 +77,7 @@ class Hand(Pack):
 	def __str__(self):
 		handString = ''
 		for card in self.cardStack:
-			handString.join(card, ' ')
+			handString += ', ' + str(card)
 
 		return handString
 
