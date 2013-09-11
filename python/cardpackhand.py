@@ -2,22 +2,25 @@
 
 import random
 
+# Maybe there is a better place for these
 suits 	= ["heart", "spade", "club", "diamond"]
 numbers = range(1,14)
 
 class Card(object):
-	"""A playing card defined by it's number & suit"""
+	"""A playing card that is defined by its number & suit"""
 
 	def __init__(self, number, suit):
 		self.NUMBER = number
 		self.SUIT = suit
 
 	def __str__(self):
+		# I hear ''.join() is better somehow. 
 		return str(self.NUMBER) + ' of ' + str(self.SUIT) + 's'
 
 
 class Pack(object):
-	"""A pack of cards. Can be shuffled, and cards can be taken and added."""
+	"""A pack of playing cards. Can be shuffled, and cards can be taken 
+	and added."""
 
 	def __init__(self):
 		self.cardStack = []
@@ -29,22 +32,27 @@ class Pack(object):
 		self.cardStack.append(card)
 
 	def drawCard(self, amount = 1):
-		"""Returns the topmost card of the pack. If many cards are requested it returns a list of the topmost cards."""
+		"""Returns the topmost card of the pack. If many cards are requested asdf it returns a list of the topmost cards.
+
+		"""
 		# cardStack[0] is the bottom of the pack,
 		# cardStack.pop() should return the topmost card.
 		if (amount == 1):
 			card = self.cardStack.pop()
 
 			print "Drew", card
-
 			return card
+
+
+#adsfadfsdsafölkd afsasdflkj aölsdkfj öalsdkfj öalksdjf öalkdsjf loooong line longcat alsdkfjaöldkfjaödflkja kekkonen yeahhhhh lolz
+
 
 		else: 
 			# things that call this with amount > 1 have to be able to accept lists?
 			print "Drawing", amount, "cards."
 			cardList = []
 			for i in xrange(amount):
-				cardList.append(cardStack.pop())
+				cardList.append(self.cardStack.pop())
 			return cardList
 
 

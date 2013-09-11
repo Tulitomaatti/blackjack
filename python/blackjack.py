@@ -17,7 +17,7 @@ if __name__ == "__main__":
 	# blackjackcheckmagickfunction()
 
 
-# unelegant game loop.
+# unelegant game loop and ui. to be moved to main.py or equivalent
 	for player in game.players:
 
 		while (not player.handList[0].finalHand):

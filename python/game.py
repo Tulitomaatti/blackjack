@@ -38,12 +38,14 @@ class Game(object):
 
 
 	def payout(self):	
+		# Maybe create functions like bustedPayout() and blackjackPayout()? 
 		for player in self.players:
 			for hand in player.handList:
 				if (hand.blackjackHand):
 					player.balance += bet
 					player.balance += bet*rules.winBlackjackFactor
-					print "Player got blackjack and won", bet*rules.winBlackjackFactor
+					print "Player got blackjack and won", 
+					bet*rules.winBlackjackFactor
 
 				elif (hand.bustedHand):
 					if (self.dealer.handList[self.dealer.currentHand].bustedHand and r.moneyBackOnDraw):
@@ -69,4 +71,4 @@ class Game(object):
 			
 	def shufflePack(self):
 		self.pack.shuffle()
-	
+

@@ -1,5 +1,5 @@
-# pvm aika kuvaus
+'# pvm aika kuvaus
 6.9. 	2h Kurssille ilmoittauduttu ja kurssi aloitettu. Asennettu ja viritelty netbeans ja git kuntoon.
-7.9. 	1h Luonnosteltu / piirrelty luokkakaavion tapainen ja vuokaavio kierroksen pelaamiselle
+7.9. 	1h Luonnosteltu / piirrelty luokkakaavion tapainen ja vuokaavio kierroksen pelaamiselle. Kirjoitettu läjä pyyttonia em. kaavioiden pohjalta.
 8.9.	1h Korjailtu perustavanlaatuisia mokia ja bugeja, sotkettu koodi täyteen debug-printtausta. 
 11.9
