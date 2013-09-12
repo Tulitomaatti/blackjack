@@ -43,10 +43,6 @@ class Pack(object):
             print "Drew", card
             return card
 
-
-#adsfadfsdsafölkd afsasdflkj aölsdkfj öalsdkfj öalksdjf öalkdsjf loooong line longcat alsdkfjaöldkfjaödflkja kekkonen yeahhhhh lolz
-
-
         else: 
             # things that call this with amount > 1 have to be able to accept lists?
             print "Drawing", amount, "cards."
@@ -67,8 +63,6 @@ class Pack(object):
 class Hand(Pack):
     """A hand of cards. Tailored for blackjack."""
 
-    _value = 0
-
     def __init__(self):
         self.cardStack = []
 
@@ -77,15 +71,13 @@ class Hand(Pack):
         self.bustedHand = False
         self.blackjackHand = False
 
+    # This _seems_ to just work for some reason... suspicious.
     @property
     def value(self):
         x = 0
         for i in xrange(len(self)):
             x += self.cardStack[i].NUMBER
         return x
-
-
-
 
         # I'm having problems getting this working
 
