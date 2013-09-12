@@ -2,7 +2,6 @@
 
 import game as g
 
-
 if __name__ == "__main__":
 	print "New game."
 
@@ -15,7 +14,6 @@ if __name__ == "__main__":
 
 	# check for blackjack
 	# blackjackcheckmagickfunction()
-
 
 # unelegant game loop and ui. to be moved to main.py or equivalent
 	for player in game.players:
