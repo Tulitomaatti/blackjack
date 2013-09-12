@@ -5,6 +5,7 @@ class Player(object):
     """Represents a player, includes actions that a player may take.
 
     Player attributes:
+    name 		- Player name
     balance		- How much money the player has.
     handList	- A list of hands the player has.
     currentHand - Which hand is being handled at the moment.
@@ -21,8 +22,9 @@ class Player(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, name):
     	"""Players are initialized with zero balance and an empty hand."""
+    	self.name = name
         self.balance = 0.0
         self.handList = []
         self.handList.append(cardpackhand.Hand())

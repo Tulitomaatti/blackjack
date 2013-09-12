@@ -5,19 +5,47 @@ import game as g
 import ui
 from ui import Texts as msg
 
-if __name__ == "__main__":
-    print "New game."
+
+def createPlayers(game, nPlayers):
+    players = ui.getPlayers(nPlayers)
+    for i in xrange(nPlayers):
+        game.players.append(game.p.Player(players[i]))
+    return
+
+def playRound(game):
+    game.betting()
+    game.deal()
+
+def newGame():
+    print msg.newGame
+
+    nPlayers = ui.newGame()
 
     game = g.Game()
 
     game.initPack()
     game.shufflePack()
-    game.pack.printPack()
-    game.betting()
-    game.deal()
+#    game.pack.printPack()
+    
+    # get players for this game
+    createPlayers(game, nPlayers)
 
-    # check for blackjack
-    # blackjackcheckmagickfunction()
+
+
+    playNextRound = True
+    while (playNextRound):
+        playRound(game)
+        playNextRound = ui.playNextRound()
+
+    return
+
+def options():
+    ui.options()
+
+
+if __name__ == "__main__":
+
+
 
 # Rewriting sensible game loop: 
 
@@ -28,6 +56,13 @@ if __name__ == "__main__":
         if (action == 'q'):
             print msg.quitMessage
             break
+
+        elif (action == 'n'):
+            newGame()
+
+        elif (action == 'o'):
+            options()
+
 
 
 
