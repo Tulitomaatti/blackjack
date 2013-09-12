@@ -30,6 +30,9 @@ if __name__ == "__main__":
 
                 if (action == "h"):
                     game.player.hit(game.pack)
+                    if (game.player.handList[game.player.currentHand].bustedHand):
+                        print "Busted!"
+                        break
                 elif (action == "d"):
                     game.player.double(game.pack)
                 elif (action == "s"):
