@@ -2,6 +2,8 @@
 
 #This file looks more like a main.py. 
 import game as g
+import ui
+from ui import Texts as msg
 
 if __name__ == "__main__":
     print "New game."
@@ -17,6 +19,22 @@ if __name__ == "__main__":
     # check for blackjack
     # blackjackcheckmagickfunction()
 
+# Rewriting sensible game loop: 
+
+
+    while (True):
+        action = ui.mainMenu()
+
+        if (action == 'q'):
+            print msg.quitMessage
+            break
+
+
+
+
+
+
+def badGameLoop():
 # unelegant game loop and ui. to be moved to main.py or equivalent
     for player in game.players:
 
@@ -32,6 +50,7 @@ if __name__ == "__main__":
                     game.player.hit(game.pack)
                     if (game.player.handList[game.player.currentHand].bustedHand):
                         print "Busted!"
+
                         break
                 elif (action == "d"):
                     game.player.double(game.pack)
