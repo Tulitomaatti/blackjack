@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*- 
 
-import pdb
-
 import game as g
 import player as p
 import ui
@@ -15,41 +13,16 @@ def createPlayers(game, nPlayers):
     return
 
 def playRound(game):
-#    pdb trace
-    # Debug results:
-    # * Pack has been created and shuffled
-    # * Dealer and player have been created, both with an 
-    #   empty handList. 
-
 
     game.betting()
-
-  #  psdb.set_trace()
-
-#    pdb trace
-    # Debug results:
-    #  * Player now has an empty hand in handList with a bet.
-    #  * Dealer also has an empty hand. 
-
     game.deal()
-
-#pdb.set_trace()
-    # Debug results: 
-    # * Player now has two cards in one hand. 
-    # * Dealer now has two cards in one hand. 
-
-
 
     for player in game.players:
         player.currentHand = 0
         for hand in player.handList:
             while (not (hand.bustedHand or hand.finalHand)):
+
                 ui.printStatus(game)
-
-                # Debug results: 
-                # * Player now has two cards in one hand. 
-                # * Dealer now has two cards in one hand. 
-
                 action = ui.roundMenu(player, hand)
 
                 if (action == 'h'):
@@ -64,35 +37,18 @@ def playRound(game):
                 else:
                     # ui.py should take care of never ending here.
                     print msg.unknownAction
+
             player.currentHand += 1
-
-
-# """ 
-# Debug results: 
-# * player has one hand with two cards after standing. 
-# * dealer has two cards. 
-
-# """
 
     # Dealer plays
     while (game.dealer.handList[0].value < game.rules.dealerHandMinValue):
         game.dealer.hit(game.pack)
         ui.printStatus(game)
 
-
-
     game.payout()
 
-    #bet has been returned, winnings paid. 
-
     game.discardCardsInPlay()
-
     game.roundCleanup()
-
-
-    # Debug here:
-    # Player has one, EMPTY hand. So does the dealer. 
-    # Player's hand has zero bet. 
 
     return
 
