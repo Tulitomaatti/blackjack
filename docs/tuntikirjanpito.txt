@@ -1,5 +1,6 @@
 '# pvm aika kuvaus
-6.9. 	2h Kurssille ilmoittauduttu ja kurssi aloitettu. Asennettu ja viritelty netbeans ja git kuntoon.
-7.9. 	1h Luonnosteltu / piirrelty luokkakaavion tapainen ja vuokaavio kierroksen pelaamiselle. Kirjoitettu läjä pyyttonia em. kaavioiden pohjalta.
-8.9.	1h Korjailtu perustavanlaatuisia mokia ja bugeja, sotkettu koodi täyteen debug-printtausta. 
-11.9
+6.9. 	2h    Kurssille ilmoittauduttu ja kurssi aloitettu. Asennettu ja viritelty netbeans ja git kuntoon.
+7.9. 	1h    Luonnosteltu / piirrelty luokkakaavion tapainen ja vuokaavio kierroksen pelaamiselle. Kirjoitettu läjä pyyttonia em. kaavioiden pohjalta.
+8.9.	1h    Korjailtu perustavanlaatuisia mokia ja bugeja, sotkettu koodi täyteen debug-printtausta. 
+11.9.   0.5h  Debuggausta ja mietiskelöjä. Exportattu kaavioista pdffiä.
+12.9.   6h    Paljon lisää debuggausta, siistitty maini ja aloitettu UI:n erottaminen muusta koodista. Peruspeli toimii. 
