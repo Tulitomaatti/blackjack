@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*- 
 
-#This file looks more like a main.py. 
 import game as g
 import player as p
 import ui
@@ -19,33 +18,25 @@ def playRound(game):
 
 
     for player in game.players:
+        player.currentHand = 0
         for hand in player.handList:
             while (not hand.finalHand):
                 ui.printStatus(game)
+                action = ui.roundMenu(player, hand)
 
+                if (action == 'h'):
+                    player.hit(game.pack)
 
-                while (not hand.bustedHand and not hand.finalHand):
-                    ui.printStatus(game)
-                    action = ui.roundMenu()
+                elif (action == 'd'):
+                    player.double(game.pack)
 
-                    if (action == 'h'):
-                        player.hit(game.pack)
-                        if (hand.bustedHand):
-                            hand.finalHand = True
-                            print msg.busted
-                            break
+                elif (action == 's'):
+                    player.stand(hand)
 
-                    elif (action == 'd'):
-                        player.double(game.pack)
-
-                    elif (action == 's'):
-                        player.stand(hand)
-
-                    else:
-                        # ui.py should take care of never ending here.
-                        print msg.unknownAction
-
-                    if (hand.finalHand): break
+                else:
+                    # ui.py should take care of never ending here.
+                    print msg.unknownAction
+            player.currentHand += 1
 
     # Dealer plays
     while (game.dealer.handList[0].value < game.rules.dealerHandMinValue):
@@ -67,14 +58,10 @@ def newGame():
 
     game.initPack()
     game.shufflePack()
-#    game.pack.printPack()
-    
-    # get players for this game
     createPlayers(game, nPlayers)
 
-
-
     playNextRound = True
+
     while (playNextRound):
         playRound(game)
         playNextRound = ui.playNextRound()

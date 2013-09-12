@@ -33,10 +33,11 @@ def mainMenu():
     action = str(raw_input(Texts.actionPrompt))
     return action
 
-def roundMenu():
+def roundMenu(player, hand):
+    print "Player", str(player) + "'s turn, hand #" + str(player.currentHand + 1) +" :", hand
     action = str(raw_input(Texts.actionPrompt + Texts.roundActions))
     if action not in Actions.validRoundActions:
-        return roundMenu()
+        return roundMenu(player, hand)
     else: 
         return action
 

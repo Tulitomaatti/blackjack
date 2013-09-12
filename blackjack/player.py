@@ -27,7 +27,6 @@ class Player(object):
     	self.name = name
         self.balance = 0.0
         self.handList = []
-        self.handList.append(cardpackhand.Hand())
         self.currentHand = 0
 
     def __str__(self):

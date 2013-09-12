@@ -31,6 +31,7 @@ class Game(object):
         self.discardStack = c.Pack()
 
         self.dealer = p.Player('Dealer')
+        self.dealer.handList.append(c.Hand())
        
         self.players = []
 
@@ -48,7 +49,7 @@ class Game(object):
         """Deals two cards to each player and the dealer."""
         for i in xrange(2):
             print "Dealer draws a card."
-            self.dealer.handList[0].putCard(self.pack.drawCard())
+            self.dealer.handList[self.dealer.currentHand].putCard(self.pack.drawCard())
 
             for plr in self.players:
                 print "Player", plr, "draws a card."
@@ -100,7 +101,8 @@ class Game(object):
             for hand in plr.handList:
                 for i in xrange(len(hand)):
                     self.discardStack.putCard(hand.drawCard())
-                del hand
+            plr.handList = []
+            plr.handList.append(c.Hand())
 
         for i in xrange(len(self.dealer.handList[self.dealer.currentHand])):
             self.discardStack.putCard(self.dealer.handList[self.dealer.currentHand].drawCard())
