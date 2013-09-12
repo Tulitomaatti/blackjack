@@ -2,7 +2,7 @@
 
 class Texts(object):
     actionPrompt = "Choose action: "
-    roundActions = "(h)it, (s)tand, or (d)ouble?"
+    roundActions = "(h)it, (s)tand, or (d)ouble? "
     nPlayerPrompt = "Choose number of players: "
     playerNamePrompt = "Enter player name: "
     mainmenu = """Blackjack - Main menu

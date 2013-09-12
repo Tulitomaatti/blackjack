@@ -19,3 +19,4 @@ class Rules(object):
         self.winPayoutFactor = 1
         self.winBlackjackFactor = 1.5
         self.handMaxValue = 21
+        self.numberOfPacks = 1

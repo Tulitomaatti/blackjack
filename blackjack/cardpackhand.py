@@ -45,13 +45,19 @@ class Pack(object):
 
     def drawCard(self, amount=1):
         """Returns the topmost card of the pack. If many cards are
-        requested, a list of the topmost cards is returned.
+        requested, a list of the topmost cards is returned. 
+        If the pack runs out of cards, the discardStack is shuffled
+        and used as a new pack. 
 
         """
         # cardStack[0] is the bottom of the pack,
         # cardStack.pop() should return the topmost card.
+        
         if (amount == 1):
+        # Would be nice to handle IndexError here but that'd 
+        # require handing game objects to here which sounds silly.
             card = self.cardStack.pop()
+
 
             print "Drew", card
             return card
