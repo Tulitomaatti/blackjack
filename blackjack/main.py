@@ -2,6 +2,7 @@
 
 #This file looks more like a main.py. 
 import game as g
+import player as p
 import ui
 from ui import Texts as msg
 
@@ -9,12 +10,53 @@ from ui import Texts as msg
 def createPlayers(game, nPlayers):
     players = ui.getPlayers(nPlayers)
     for i in xrange(nPlayers):
-        game.players.append(game.p.Player(players[i]))
+        game.players.append(p.Player(players[i]))
     return
 
 def playRound(game):
     game.betting()
     game.deal()
+
+
+    for player in game.players:
+        for hand in player.handList:
+            while (not hand.finalHand):
+                ui.printStatus(game)
+
+
+                while (not hand.bustedHand and not hand.finalHand):
+                    ui.printStatus(game)
+                    action = ui.roundMenu()
+
+                    if (action == 'h'):
+                        player.hit(game.pack)
+                        if (hand.bustedHand):
+                            hand.finalHand = True
+                            print msg.busted
+                            break
+
+                    elif (action == 'd'):
+                        player.double(game.pack)
+
+                    elif (action == 's'):
+                        player.stand(hand)
+
+                    else:
+                        # ui.py should take care of never ending here.
+                        print msg.unknownAction
+
+                    if (hand.finalHand): break
+
+    # Dealer plays
+    while (game.dealer.handList[0].value < game.rules.dealerHandMinValue):
+        game.dealer.hit(game.pack)
+        ui.printStatus(game)
+
+    game.payout()
+
+    game.discardCardsInPlay()
+
+    return
 
 def newGame():
     print msg.newGame
@@ -45,11 +87,6 @@ def options():
 
 if __name__ == "__main__":
 
-
-
-# Rewriting sensible game loop: 
-
-
     while (True):
         action = ui.mainMenu()
 
@@ -62,65 +99,4 @@ if __name__ == "__main__":
 
         elif (action == 'o'):
             options()
-
-
-
-
-
-
-
-def badGameLoop():
-# unelegant game loop and ui. to be moved to main.py or equivalent
-    for player in game.players:
-
-        while (not player.handList[0].finalHand):
-            print "Dealer has: \t", game.dealer.handList[0]
-            print "Your hand is:\t", player.handList[game.player.currentHand]
-
-            invalidAction = False
-            while (not invalidAction and not game.player.handList[game.player.currentHand].bustedHand): 
-                action = raw_input("Choose action: (h, s, d):")
-
-                if (action == "h"):
-                    game.player.hit(game.pack)
-                    if (game.player.handList[game.player.currentHand].bustedHand):
-                        print "Busted!"
-
-                        break
-                elif (action == "d"):
-                    game.player.double(game.pack)
-                elif (action == "s"):
-                    game.player.stand(game.player.handList[game.player.currentHand])
-                else:
-                    print "Unknown action."
-
-                if (player.handList[0].finalHand): break
-
-
-    #dealer plays
-    print "Dealer plays..."
-
-    print "Dealer hand value:", game.dealer.handList[0].value
-
-    while (game.dealer.handList[0].value < game.rules.dealerHandMinValue):
-        print "hand under", game.rules.dealerHandMinValue, "dealer hits: "
-        game.dealer.hit(game.pack)
-
-    print "Everyone has done playing..."
-    print "Dealer has: \t", game.dealer.handList[0]
-    print "that's", game.dealer.handList[0].value, "for the dealer."
-    print "Your hand is:\t", player.handList[game.player.currentHand]
-    print "that's", game.player.handList[0].value, "for the player."
-
-
-    #compare hands
-    print "Comparing hands..."
-    game.payout()
-
-    print "Paying money to winners, losers get nothing and draw's get money back."
-
-    print "Final situation:"
-    print "player balance: ", game.players[0].balance
-
-    print "Game over."
 

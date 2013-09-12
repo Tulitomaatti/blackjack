@@ -30,6 +30,9 @@ class Player(object):
         self.handList.append(cardpackhand.Hand())
         self.currentHand = 0
 
+    def __str__(self):
+    	return self.name
+
     def bet(self, bet, handIndex = 0):
     	"""Places a bet on a hand owned. Bet is reduced from balance."""
         self.balance -= bet
@@ -51,7 +54,8 @@ class Player(object):
     def double(self, pack):
     	"""Get one final card from the dealer and double the hand's bet."""
         self.bet(self.handList[self.currentHand].bet)
-        self.handList[self.currentHand].putCard(pack.drawCard())
+        #self.handList[self.currentHand].putCard(pack.drawCard())
+        self.hit(pack)
         self.handList[self.currentHand].finalHand = True
         
 

@@ -23,14 +23,16 @@ class Game(object):
     shufflePack()   - Shuffles the pack. 
 
     """
-    rules = r.Rules()
-    pack = c.Pack()
 
-    dealer = p.Player()
-    player = p.Player()    
+    def __init__(self):
 
-    # here for now, players should be created via the main program.
-    players = [player]
+        self.rules = r.Rules()
+        self.pack = c.Pack()
+        self.discardStack = c.Pack()
+
+        self.dealer = p.Player('Dealer')
+       
+        self.players = []
 
     def betting(self):
         """Gets a bet from each player."""
@@ -92,4 +94,14 @@ class Game(object):
     def shufflePack(self):
         """Shuffles the pack in play."""
         self.pack.shuffle()
+
+    def discardCardsInPlay(self):
+        for plr in self.players:
+            for hand in plr.handList:
+                for i in xrange(len(hand)):
+                    self.discardStack.putCard(hand.drawCard())
+                del hand
+
+        for i in xrange(len(self.dealer.handList[self.dealer.currentHand])):
+            self.discardStack.putCard(self.dealer.handList[self.dealer.currentHand].drawCard())
 
