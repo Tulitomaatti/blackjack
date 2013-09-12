@@ -29,6 +29,7 @@ class Game(object):
     dealer = p.Player()
     player = p.Player()    
 
+    # here for now, players should be created via the main program.
     players = [player]
 
     def betting(self):
@@ -66,7 +67,7 @@ class Game(object):
                     print "Player got blackjack and won", 
 
                 elif (hand.bustedHand):
-                    if (self.dealer.handList[self.dealer.currentHand].bustedHand and r.moneyBackOnDraw):
+                    if (self.dealer.handList[self.dealer.currentHand].bustedHand and self.rules.moneyBackOnDraw):
                         player.balance += hand.bet
                         print "Busted, but so was the dealer. Bet returned."
                     else:

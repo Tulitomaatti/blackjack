@@ -86,7 +86,7 @@ class Hand(Pack):
 
         self.bet = 0.0
         self.finalHand = False
-        self.bustedHand = False
+      # self.bustedHand = False
         self.blackjackHand = False
 
     # This _seems_ to just work for some reason... suspicious.
@@ -94,9 +94,23 @@ class Hand(Pack):
     @property
     def value(self):
         x = 0
+
         for i in xrange(len(self)):
-            x += self.cardStack[i].NUMBER
+            if (self.cardStack[i].NUMBER > 10):
+                # In blackjack J, Q and K equal to 10 points.
+                x += 10
+            else:
+                # Otherwise hand value just equals the sum of the card numbers.
+                x += self.cardStack[i].NUMBER
+
         return x
+
+    @property
+    def bustedHand(self):
+        if (self.value > 21):
+            return True
+        else: 
+            return False
 
     def doubleBet(self):
         """Doubles the bet of the hand."""

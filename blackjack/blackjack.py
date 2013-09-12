@@ -9,6 +9,7 @@ if __name__ == "__main__":
     game = g.Game()
 
     game.initPack()
+    game.shufflePack()
     game.pack.printPack()
     game.betting()
     game.deal()
@@ -50,13 +51,19 @@ if __name__ == "__main__":
 
     print "Everyone has done playing..."
     print "Dealer has: \t", game.dealer.handList[0]
+    print "that's", game.dealer.handList[0].value, "for the dealer."
     print "Your hand is:\t", player.handList[game.player.currentHand]
+    print "that's", game.player.handList[0].value, "for the player."
+
 
     #compare hands
     print "Comparing hands..."
+    game.payout()
 
-    #payout
     print "Paying money to winners, losers get nothing and draw's get money back."
+
+    print "Final situation:"
+    print "player balance: ", game.players[0].balance
 
     print "Game over."
 
