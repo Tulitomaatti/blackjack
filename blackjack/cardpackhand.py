@@ -18,6 +18,7 @@ class Card(object):
         return str(self.NUMBER) + ' of ' + str(self.SUIT) + 's'
 
     def __eq__(self, other): 
+        # Easier than always fetching numbers & suits
         return (self.NUMBER == other.NUMBER and self.SUIT == other.SUIT)
 
 
