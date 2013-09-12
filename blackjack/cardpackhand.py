@@ -108,6 +108,7 @@ class Hand(Pack):
     @property
     def bustedHand(self):
         if (self.value > 21):
+            self.finalHand = True
             return True
         else: 
             return False

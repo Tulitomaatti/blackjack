@@ -25,7 +25,7 @@ if __name__ == "__main__":
             print "Your hand is:\t", player.handList[game.player.currentHand]
 
             invalidAction = False
-            while (not invalidAction): 
+            while (not invalidAction and not game.player.handList[game.player.currentHand].bustedHand): 
                 action = raw_input("Choose action: (h, s, d):")
 
                 if (action == "h"):
