@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*- 
 
+#This file looks more like a main.py. 
 import game as g
 
 if __name__ == "__main__":

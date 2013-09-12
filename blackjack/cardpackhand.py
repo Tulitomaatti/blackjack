@@ -19,20 +19,33 @@ class Card(object):
 
 
 class Pack(object):
-    """A pack of playing cards. Can be shuffled, and cards can be taken 
-    and added."""
+    """A pack of playing cards.
+
+    Properties:
+    cardStack - A list that includes the cards in the pack.
+
+    Actions:
+    shuffle()           - Shuffles the pack.
+    putCard()           - Puts a card on top of the pack.
+    drawCard([amount])  - Draws cards from the top.
+
+    printPack()         - Prints the cards in the pack.
+    """
 
     def __init__(self):
         self.cardStack = []
 
     def shuffle(self):
+        """Shuffles the pack."""
         random.shuffle(self.cardStack)
 
     def putCard(self, card):
+        """Inserts a card to the top of the pack."""
         self.cardStack.append(card)
 
-    def drawCard(self, amount = 1):
-        """Returns the topmost card of the pack. If many cards are requested asdf it returns a list of the topmost cards.
+    def drawCard(self, amount=1):
+        """Returns the topmost card of the pack. If many cards are
+        requested, a list of the topmost cards is returned.
 
         """
         # cardStack[0] is the bottom of the pack,
@@ -52,18 +65,23 @@ class Pack(object):
             return cardList
 
 
-    def __len__(self): return len(self.cardStack)
+    def __len__(self): 
+        return len(self.cardStack)
 
     def printPack(self):
+        """Prints all cards in the pack and states the number of
+        cards."""
+
         for card in self.cardStack:
             print card
         print "A total of", len(self.cardStack), "cards."
 
 
 class Hand(Pack):
-    """A hand of cards. Tailored for blackjack."""
+    """A hand of cards. Has a bet and game-related attributes."""
 
     def __init__(self):
+        """Hands are initialized empty with zero bet."""
         self.cardStack = []
 
         self.bet = 0.0
@@ -72,6 +90,7 @@ class Hand(Pack):
         self.blackjackHand = False
 
     # This _seems_ to just work for some reason... suspicious.
+    # I'd like to have the value inside __init__ rather. 
     @property
     def value(self):
         x = 0
@@ -79,33 +98,12 @@ class Hand(Pack):
             x += self.cardStack[i].NUMBER
         return x
 
-        # I'm having problems getting this working
-
-        # def value():
-        #     doc = "The value of the hand in blackjack."
-        #     def fget(self):
-        #         value = 0
-        #               for i in xrange(len(self)):
-        #             value += self.cardStack[i].NUMBER
-        #         return value
-
-        #     # Proper errors should be raised instead of return None
-        #     def fset(self, value):
-        #         print "Can't set hand value. Change cards for that."
-        #         return None
-        #     def fdel(self):
-        #         print "Can't delete hand value. Delete cards for that."
-        #         return None
-        #     return locals()
-
-        # value = property(**value())
-
-
-
     def doubleBet(self):
+        """Doubles the bet of the hand."""
         self.bet *= 2
 
     def __str__(self):
+        """Returns a string representation of the hand."""
         handString = ''
         for card in self.cardStack:
             if (handString == ''):
