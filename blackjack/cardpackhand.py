@@ -17,6 +17,9 @@ class Card(object):
         # I hear ''.join() is better somehow. 
         return str(self.NUMBER) + ' of ' + str(self.SUIT) + 's'
 
+    def __eq__(self, other): 
+        return (self.NUMBER == other.NUMBER and self.SUIT == other.SUIT)
+
 
 class Pack(object):
     """A pack of playing cards.
@@ -52,7 +55,7 @@ class Pack(object):
         """
         # cardStack[0] is the bottom of the pack,
         # cardStack.pop() should return the topmost card.
-        
+
         if (amount == 1):
         # Would be nice to handle IndexError here but that'd 
         # require handing game objects to here which sounds silly.
@@ -73,6 +76,20 @@ class Pack(object):
 
     def __len__(self): 
         return len(self.cardStack)
+
+    def __eq__(self, other):
+        if (len(self) != len(other)): 
+            return False
+        elif (len(self) == 0 and len(other) == 0):
+            return True
+
+        else:
+            for i in xrange(len(self)):
+                if self.cardStack[i] != other.cardStack[i]:
+                    return False
+
+        return True
+
 
     def printPack(self):
         """Prints all cards in the pack and states the number of
@@ -125,6 +142,8 @@ class Hand(Pack):
 
     def __str__(self):
         """Returns a string representation of the hand."""
+
+        # TODO : reimplement with .join()
         handString = ''
         for card in self.cardStack:
             if (handString == ''):
