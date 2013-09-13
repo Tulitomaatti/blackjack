@@ -25,8 +25,8 @@ def test_card():
 
 
     # Same valued cards have same values and suits. 
-    assert_equal((card1.NUMBER, card1.SUIT), (card3.NUMBER, card3.SUIT))
-    assert_not_equal((card1.NUMBER, card1.SUIT), (card2.NUMBER, card2.SUIT))
+    assert_equal((card1.number, card1.suit), (card3.number, card3.suit))
+    assert_not_equal((card1.number, card1.suit), (card2.number, card2.suit))
 
     # But two like cards are not the same card
     assert_is_not(card1, card2)
@@ -45,27 +45,27 @@ def test_pack():
     assert_equal(len(pack), 0)
 
     # Can't get cards from an empty pack
-    assert_raises(IndexError, pack.drawCard)
+    assert_raises(IndexError, pack.draw_card)
    
     # Putting cards to a pack
-    pack.putCard(card1)
+    pack.put_card(card1)
     assert_equal(len(pack), 1)
 
-    pack.putCard(card2)
+    pack.put_card(card2)
     assert_equal(len(pack), 2)
 
     # If we draw a card it should be the same card we just put in.
-    assert_equal(pack.drawCard(), card2)
+    assert_equal(pack.draw_card(), card2)
 
     # Only one card should remain
     assert_equal(len(pack), 1)
 
-    pack.putCard(card1)
-    pack.putCard(card2)
-    pack.putCard(card3)
+    pack.put_card(card1)
+    pack.put_card(card2)
+    pack.put_card(card3)
 
     # Drawing cards from a pack
-    cards = pack.drawCard(3)
+    cards = pack.draw_card(3)
 
     # Cards come out of the pack in the reverse order we put them in.
     assert_equal(cards, [card3, card2, card1])
@@ -74,19 +74,19 @@ def test_pack_shuffling():
     a = Pack()
     b = Pack()
 
-    # initPack(a)
-    # initPack(b)
+    # init_pack(a)
+    # init_pack(b)
 
     # Something fishy around here. This should fail as it is. 
     # Have to inspect __eq__ in pack and card.
     card = Card(1,'a')
 
-    a.putCard(card)
-    b.putCard(card)
+    a.put_card(card)
+    b.put_card(card)
 
     assert_true(a == b)
 
-    shufflePack(a)
+    shuffle_pack(a)
 
     assert_true(a == b)
 
@@ -101,26 +101,26 @@ def test_hand():
 
     assert_equal(h.bet, 10)
 
-    h.putCard(card1)
-    h.putCard(card2)
-    h.putCard(card3)
+    h.put_card(card1)
+    h.put_card(card2)
+    h.put_card(card3)
 
     card_value_sum = 0 
     for i in xrange(len(h)):
-        if h.cardStack[i].NUMBER > 10:
+        if h.card_stack[i].number > 10:
             card_value_sum += 10
         else:
-            card_value_sum += h.cardStack[i].NUMBER
+            card_value_sum += h.card_stack[i].number
 
     assert_equal(h.value, card_value_sum)
 
     # Hand not busted yet, 1+k+1 = 12
-    assert_false(h.bustedHand)
+    assert_false(h.busted)
 
-    h.putCard(card2)
+    h.put_card(card2)
 
     # hands get busted after one more King( 12 + 10 = 22)
-    assert_true(h.bustedHand)
+    assert_true(h.busted)
 
 
 def test_hand_negative_bet():
@@ -133,20 +133,20 @@ def test_hand_bet_doubling():
     h = Hand()
     bet = 10
     h.bet = bet
-    h.doubleBet()
+    h.double_bet()
 
     assert_equal(h.bet, bet*2)
 
 def create_some_cards():
     return Card(1, 'spade'), Card(13, 'hearts'), Card(1, 'spade')
 
-def initPack(pack):
+def init_pack(pack):
     """Add the standard 52 cards to the pack"""
     for suit in suits:
        for number in numbers:
-           pack.putCard(Card(number, suit))
+           pack.put_card(Card(number, suit))
     
-def shufflePack(pack):
+def shuffle_pack(pack):
     """Shuffles the pack"""
     pack.shuffle()
 

@@ -48,12 +48,12 @@ class Player(object):
     def hit(self, pack):
     	"""Request a card from the dealer."""
         print "Hitting a card:",
-        self.hand_list[self.current_hand].putCard(pack.drawCard())
+        self.hand_list[self.current_hand].put_card(pack.draw_card())
 
     def double(self, pack):
     	"""Get one final card from the dealer and double the hand's bet."""
         self.bet(self.hand_list[self.current_hand].bet)
-        #self.hand_list[self.current_hand].putCard(pack.drawCard())
+        #self.hand_list[self.current_hand].put_card(pack.draw_card())
         self.hit(pack)
         self.hand_list[self.current_hand].final_hand = True
         
