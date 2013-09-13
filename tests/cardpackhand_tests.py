@@ -20,6 +20,8 @@ from blackjack.cardpackhand import numbers
 # def test_with_setup_and_teardown():
 #     pass
 
+# TODO : Split some tests (easier problem pinpointing.)
+
 def test_card():
     card1, card2, card3 = create_some_cards()
 

@@ -5,13 +5,7 @@ class Texts(object):
     round_actions = "(h)it, (s)tand, or (d)ouble? "
     n_player_prompt = "Choose number of players: "
     player_name_prompt = "Enter player name: "
-    main_menu = """Blackjack - Main menu
 
-    (n)ew game
-    (o)ptions 
-    (q)uit
-    """
-    
     new_game = """Starting a new game."""
     new_round = """New round."""
     next_round_prompt = """Play a new round? (y/n): """
@@ -19,13 +13,31 @@ class Texts(object):
     busted = "Hand value over 21. Busted!"
     unknown_action = "Unknown action. Please retry. "
 
+    # Menu texts here
+    main_menu = """Blackjack - Main menu
+
+    (n)ew game
+    (o)ptions 
+    (q)uit
+    """
+
+    options_menu = """Blackjack - Options
+
+    show (r)ules
+    
+
+    """
+    
+
 class Actions(object):
     round_actions = "hsd"
     main_menu_actions = "noq"
+    option_actions = "r"
 
     # This seems like a tautology
     valid_round_actions = list(round_actions)
     valid_main_menu_actions = list(main_menu_actions)
+    valid_option_actions = list(option_actions)
 
 def main_menu():
     print Texts.main_menu
@@ -60,7 +72,12 @@ def play_next_round():
     else: return play_next_round()
 
 def options():
-    pass
+    print Texts.options_menu
+    action = str(raw_input(Texts.action_prompt))
+    if action not in Actions.valid_option_actions:
+        return options()
+    else:
+        return action
 
 
 def print_status(game):
