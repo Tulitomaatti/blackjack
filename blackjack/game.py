@@ -45,13 +45,10 @@ class Game(object):
             player.hand_list.append(c.Hand())
             player.bet(float(raw_input("Enter bet: ")))
 
-        print "Betting finished."
 
     def deal(self):
         """Deals two cards to each player and the dealer."""
         for i in xrange(2):
-            print "Dealer draws a card."
-
             card = None
             try:
                 card = self.pack.draw_card()
@@ -66,8 +63,6 @@ class Game(object):
 
             card = None
             for plr in self.players:
-                print "Player", plr, "draws a card."
-
                 try: 
                     card = self.pack.draw_card()
 
@@ -82,39 +77,34 @@ class Game(object):
         """Pays winnings to each player."""
 
            # Maybe create functions like bustedPayout() and blackjackPayout()? 
-
            # todo: have dealer collect lost bets.
+
         for player in self.players:
             for hand in player.hand_list:
                 if (hand.blackjackHand):
                     player.balance += hand.bet
                     player.balance += hand.bet * self.rules.win_blackjack_factor
-                    print "Player got blackjack and won", 
 
                 elif (hand.busted):
                     if (self.dealer.hand_list[self.dealer.current_hand].busted and self.rules.moneyBackOnDraw):
                         player.balance += hand.bet
-                        print "Busted, but so was the dealer. Bet returned."
                     else:
-                        print "Hand was busted, no payout."
+                        #hand was busted. no payout needed, because bets are already taken when betting.
+                        pass
 
                 elif (hand.value > self.dealer.hand_list[self.dealer.current_hand].value or 
                     self.dealer.hand_list[self.dealer.current_hand].busted):
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor
-                    print "Hand won, got bet and", hand.bet*self.rules.win_payout_factor
 
                 elif (hand.value == self.dealer.hand_list[self.dealer.current_hand].value and self.rules.moneyBackOnDraw):
-                    print "Draw! Bet returned."
                     player.balance += hand.bet
-
-
                 else:
-                    print "Hand lost to dealer."
-
+                    #hand lost. no payout needed, because bets are already taken when betting.
+                    pass
         
     def init_pack(self):
-        print "Adding a standard 52 card pack to play."
+        """Generates the standard 52 cards and puts them in the pack in play."""
         for suit in c.suits:
             for number in c.numbers:
                 self.pack.put_card(c.Card(number, suit))
@@ -124,6 +114,7 @@ class Game(object):
         self.pack.shuffle()
 
     def discard_cards_in_play(self):
+        """Discards all cards in all hands on all players and the dealer."""
         for plr in self.players:
             for hand in plr.hand_list:
                 for i in xrange(len(hand)):
@@ -139,7 +130,7 @@ class Game(object):
             player.current_hand = 0
 
     def _shuffle_discard_pile_and_use_as_current_pack(self):
-        print "Ran out of cards! Shuffling the discarded cards."
+        """Makes the cards in discard pile the current pack and shuffle it."""
         del self.pack
         self.pack = self.discard_pack
         del self.discard_pack

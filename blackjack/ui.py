@@ -24,7 +24,7 @@ class Texts(object):
     options_menu = """Blackjack - Options
 
     show (r)ules
-    
+
 
     """
     
@@ -95,7 +95,16 @@ def print_status(game):
             print
         print
     print
-            
+
+
+def print_pack(pack):
+    """Prints all cards in the pack and states the number of
+    cards."""
+
+    for card in pack.card_stack:
+        print card
+    print "A total of", len(pack.card_stack), "cards."
+        
 
 
 
