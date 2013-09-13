@@ -10,57 +10,57 @@ class Card(object):
     """A playing card that is defined by its number & suit"""
 
     def __init__(self, number, suit):
-        self.NUMBER = number
-        self.SUIT = suit
+        self.number = number
+        self.suit = suit
 
     def __str__(self):
         # I hear ''.join() is better somehow. 
-        return str(self.NUMBER) + ' of ' + str(self.SUIT) + 's'
+        return str(self.number) + ' of ' + str(self.suit) + 's'
 
     def __eq__(self, other): 
         # Easier than always fetching numbers & suits
-        return (self.NUMBER == other.NUMBER and self.SUIT == other.SUIT)
+        return (self.number == other.number and self.suit == other.suit)
 
 
 class Pack(object):
     """A pack of playing cards.
 
     Properties:
-    cardStack - A list that includes the cards in the pack.
+    card_stack - A list that includes the cards in the pack.
 
     Actions:
     shuffle()           - Shuffles the pack.
-    putCard()           - Puts a card on top of the pack.
-    drawCard([amount])  - Draws cards from the top.
+    put_card()           - Puts a card on top of the pack.
+    draw_card([amount])  - Draws cards from the top.
 
-    printPack()         - Prints the cards in the pack.
+    print_pack()         - Prints the cards in the pack.
     """
 
     def __init__(self):
-        self.cardStack = []
+        self.card_stack = []
 
     def shuffle(self):
         """Shuffles the pack."""
-        random.shuffle(self.cardStack)
+        random.shuffle(self.card_stack)
 
-    def putCard(self, card):
+    def put_card(self, card):
         """Inserts a card to the top of the pack."""
-        self.cardStack.append(card)
+        self.card_stack.append(card)
 
-    def drawCard(self, amount=1):
+    def draw_card(self, amount=1):
         """Returns the topmost card of the pack. If many cards are
         requested, a list of the topmost cards is returned. 
-        If the pack runs out of cards, the discardStack is shuffled
+        If the pack runs out of cards, the discard_stack is shuffled
         and used as a new pack. 
 
         """
-        # cardStack[0] is the bottom of the pack,
-        # cardStack.pop() should return the topmost card.
+        # card_stack[0] is the bottom of the pack,
+        # card_stack.pop() should return the topmost card.
 
         if (amount == 1):
         # Would be nice to handle IndexError here but that'd 
         # require handing game objects to here which sounds silly.
-            card = self.cardStack.pop()
+            card = self.card_stack.pop()
 
 
             print "Drew", card
@@ -71,14 +71,15 @@ class Pack(object):
             print "Drawing", amount, "cards."
             cardList = []
             for i in xrange(amount):
-                cardList.append(self.cardStack.pop())
+                cardList.append(self.card_stack.pop())
             return cardList
 
 
     def __len__(self): 
-        return len(self.cardStack)
+        return len(self.card_stack)
 
     def __eq__(self, other):
+        # TODO : fix this
         if (len(self) != len(other)): 
             return False
         elif (len(self) == 0 and len(other) == 0):
@@ -86,19 +87,19 @@ class Pack(object):
 
         else:
             for i in xrange(len(self)):
-                if self.cardStack[i] != other.cardStack[i]:
+                if self.card_stack[i] != other.card_stack[i]:
                     return False
 
         return True
 
 
-    def printPack(self):
+    def print_pack(self):
         """Prints all cards in the pack and states the number of
         cards."""
 
-        for card in self.cardStack:
+        for card in self.card_stack:
             print card
-        print "A total of", len(self.cardStack), "cards."
+        print "A total of", len(self.card_stack), "cards."
 
 
 class Hand(Pack):
@@ -106,11 +107,11 @@ class Hand(Pack):
 
     def __init__(self):
         """Hands are initialized empty with zero bet."""
-        self.cardStack = []
+        self.card_stack = []
 
         self.bet = 0.0
         self.finalHand = False
-      # self.bustedHand = False
+      # self.busted = False
         self.blackjackHand = False
 
     # This _seems_ to just work for some reason... suspicious.
@@ -120,24 +121,24 @@ class Hand(Pack):
         x = 0
 
         for i in xrange(len(self)):
-            if (self.cardStack[i].NUMBER > 10):
+            if (self.card_stack[i].number > 10):
                 # In blackjack J, Q and K equal to 10 points.
                 x += 10
             else:
                 # Otherwise hand value just equals the sum of the card numbers.
-                x += self.cardStack[i].NUMBER
+                x += self.card_stack[i].number
 
         return x
 
     @property
-    def bustedHand(self):
+    def busted(self):
         if (self.value > 21):
             self.finalHand = True
             return True
         else: 
             return False
 
-    def doubleBet(self):
+    def double_bet(self):
         """Doubles the bet of the hand."""
         self.bet *= 2
 
@@ -146,7 +147,7 @@ class Hand(Pack):
 
         # TODO : reimplement with .join()
         handString = ''
-        for card in self.cardStack:
+        for card in self.card_stack:
             if (handString == ''):
                 handString += str(card)
             else:

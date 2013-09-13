@@ -5,18 +5,18 @@ class Rules(object):
 
     Rule variables:
 
-    moneyBackOnDraw     - Whether money is returned on a draw.
-    dealerHandMinValue  - Minimum value for dealer's hand.
-    winPayoutFactor     - How much of the original bet is won.
-    winBlackjackFactor  - How much of the bet is won on a blackjack.
-    handMaxValue        - Maximum hand value before the hand is
+    money_back_on_draw    - Whether money is returned on a draw.
+    dealer_hand_min_value - Minimum value for dealer's hand.
+    win_payout_factor     - How much of the original bet is won.
+    win_blackjack_factor  - How much of the bet is won on a blackjack.
+    hand_max_value        - Maximum hand value before the hand is
                           considered to be busted.
 
     """
     def __init__(self):
-        self.moneyBackOnDraw = True
-        self.dealerHandMinValue = 17
-        self.winPayoutFactor = 1
-        self.winBlackjackFactor = 1.5
-        self.handMaxValue = 21
-        self.numberOfPacks = 1
+        self.money_back_on_draw = True
+        self.dealer_hand_min_value = 17
+        self.win_payout_factor = 1
+        self.win_blackjack_factor = 1.5
+        self.hand_max_value = 21
+        self.number_of_packs = 1

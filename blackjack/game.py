@@ -19,8 +19,8 @@ class Game(object):
     deal()          - Deal cards for this round.
     payout()        - Pay winnings.
 
-    initPack()      - Create a standard 52 card pack of cards.
-    shufflePack()   - Shuffles the pack. 
+    init_pack()      - Create a standard 52 card pack of cards.
+    shuffle_pack()   - Shuffles the pack. 
 
     """
 
@@ -55,7 +55,7 @@ class Game(object):
                 card = self.pack.drawCard()
             
             except IndexError:
-                self.shuffleDiscardPileAndUseAsCurrentPack()
+                self._shuffle_discard_pile_and_use_as_current_pack()
                 card = self.pack.drawCard()
 
             finally:
@@ -70,7 +70,7 @@ class Game(object):
                     card = self.pack.drawCard()
 
                 except IndexError:
-                    self.shuffleDiscardPileAndUseAsCurrentPack()
+                    self._shuffle_discard_pile_and_use_as_current_pack()
                     card = self.pack.drawCard()
 
                 finally:
@@ -111,17 +111,17 @@ class Game(object):
                     print "Hand lost to dealer."
 
         
-    def initPack(self):
+    def init_pack(self):
         print "Adding a standard 52 card pack to play."
         for suit in c.suits:
             for number in c.numbers:
                 self.pack.putCard(c.Card(number, suit))
             
-    def shufflePack(self):
+    def shuffle_pack(self):
         """Shuffles the pack in play."""
         self.pack.shuffle()
 
-    def discardCardsInPlay(self):
+    def discard_cards_in_play(self):
         for plr in self.players:
             for hand in plr.handList:
                 for i in xrange(len(hand)):
@@ -130,17 +130,17 @@ class Game(object):
         for i in xrange(len(self.dealer.handList[self.dealer.currentHand])):
             self.discardPack.putCard(self.dealer.handList[self.dealer.currentHand].drawCard())
 
-    def roundCleanup(self):
+    def round_cleanup(self):
         for player in self.players:
             del player.handList
             player.handList = []
             player.currentHand = 0
 
-    def shuffleDiscardPileAndUseAsCurrentPack(self):
+    def _shuffle_discard_pile_and_use_as_current_pack(self):
         print "Ran out of cards! Shuffling the discarded cards."
         del self.pack
         self.pack = self.discardPack
         del self.discardPack
         self.discardPack = c.Pack()
-        self.shufflePack()
+        self.shuffle_pack()
 

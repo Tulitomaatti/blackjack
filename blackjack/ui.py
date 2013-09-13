@@ -1,69 +1,69 @@
 # -*- coding: utf-8 -*-
 
 class Texts(object):
-    actionPrompt = "Choose action: "
-    roundActions = "(h)it, (s)tand, or (d)ouble? "
-    nPlayerPrompt = "Choose number of players: "
-    playerNamePrompt = "Enter player name: "
-    mainmenu = """Blackjack - Main menu
+    action_prompt = "Choose action: "
+    round_actions = "(h)it, (s)tand, or (d)ouble? "
+    n_player_prompt = "Choose number of players: "
+    player_name_prompt = "Enter player name: "
+    main_menu = """Blackjack - Main menu
 
     (n)ew game
     (o)ptions 
     (q)uit
     """
     
-    newGame = """Starting a new game."""
-    newRound = """New round."""
-    nextRoundPrompt = """Play a new round? (y/n): """
-    quitMessage = """Quitting. Bye bye!"""
+    new_game = """Starting a new game."""
+    new_round = """New round."""
+    next_round_prompt = """Play a new round? (y/n): """
+    quit_message = """Quitting. Bye bye!"""
     busted = "Hand value over 21. Busted!"
-    unknownAction = "Unknown action. Please retry. "
+    unknown_action = "Unknown action. Please retry. "
 
 class Actions(object):
-    roundActions = "hsd"
-    mainMenuActions = "noq"
+    round_actions = "hsd"
+    main_menu_actions = "noq"
 
     # This seems like a tautology
-    validRoundActions = list(roundActions)
-    validMainMenuActions = list(mainMenuActions)
+    valid_round_actions = list(round_actions)
+    valid_main_menu_actions = list(main_menu_actions)
 
-def mainMenu():
-    print Texts.mainmenu
+def main_menu():
+    print Texts.main_menu
 
-    action = str(raw_input(Texts.actionPrompt))
+    action = str(raw_input(Texts.action_prompt))
     return action
 
-def roundMenu(player, hand):
+def round_menu(player, hand):
     print "Player", str(player) + "'s turn, hand #" + str(player.currentHand + 1) +" :", hand
-    action = str(raw_input(Texts.actionPrompt + Texts.roundActions))
-    if action not in Actions.validRoundActions:
-        return roundMenu(player, hand)
+    action = str(raw_input(Texts.action_prompt + Texts.round_actions))
+    if action not in Actions.valid_round_actions:
+        return round_menu(player, hand)
     else: 
         return action
 
 
 
-def newGame():
+def new_game():
     # might return list of players in future?
-    return int(raw_input(Texts.nPlayerPrompt))
+    return int(raw_input(Texts.n_player_prompt))
 
-def getPlayers(nPlayers):
+def get_players(nPlayers):
     players = []
     for i in xrange(nPlayers):
-        players.append(str(raw_input(Texts.playerNamePrompt)))
+        players.append(str(raw_input(Texts.player_name_prompt)))
     return players
 
-def playNextRound():
-    answer = str(raw_input(Texts.nextRoundPrompt))
+def play_next_round():
+    answer = str(raw_input(Texts.next_round_prompt))
     if (answer == 'y'): return True
     if (answer == 'n'): return False
-    else: return playNextRound()
+    else: return play_next_round()
 
 def options():
     pass
 
 
-def printStatus(game):
+def print_status(game):
     print "Status:"
     print "Dealer's hand:\t", game.dealer.handList[game.dealer.currentHand]
     print "Dealer's hand value:", game.dealer.handList[game.dealer.currentHand].value

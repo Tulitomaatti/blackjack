@@ -6,13 +6,13 @@ import ui
 from ui import Texts as msg
 
 
-def createPlayers(game, nPlayers):
+def create_players(game, nPlayers):
     players = ui.getPlayers(nPlayers)
     for i in xrange(nPlayers):
         game.players.append(p.Player(players[i]))
     return
 
-def playRound(game):
+def play_round(game):
 
     game.betting()
     game.deal()
@@ -52,10 +52,10 @@ def playRound(game):
 
     return
 
-def newGame():
-    print msg.newGame
+def new_game():
+    print msg.new_game
 
-    nPlayers = ui.newGame()
+    nPlayers = ui.new_game()
 
     game = g.Game()
 
@@ -64,12 +64,12 @@ def newGame():
         game.initPack()
 
     game.shufflePack()
-    createPlayers(game, nPlayers)
+    create_players(game, nPlayers)
 
     playNextRound = True
 
     while (playNextRound):
-        playRound(game)
+        play_round(game)
         playNextRound = ui.playNextRound()
 
     return
@@ -88,7 +88,7 @@ if __name__ == "__main__":
             break
 
         elif (action == 'n'):
-            newGame()
+            new_game()
 
         elif (action == 'o'):
             options()

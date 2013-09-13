@@ -18,7 +18,7 @@ class Player(object):
     split		- Split the hand in two. NOT IMPLEMENTED
     insurance	- Buy insurance for dealer's blackjack. NOT IMPLEMENTED
 
-    printCurrentHand() Will print the current hand.
+    print_current_hand() Will print the current hand.
 
     """
 
@@ -66,7 +66,7 @@ class Player(object):
     	"""Buy insurance when it looks like the dealer gets a blackjack."""
         pass
 
-    def printCurrentHand(self):
+    def print_current_hand(self):
     	"""Print the current hand."""
         print self.handList[self.currentHand]
 
