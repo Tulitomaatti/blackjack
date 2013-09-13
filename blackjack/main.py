@@ -6,9 +6,9 @@ import ui
 from ui import Texts as msg
 
 
-def create_players(game, nPlayers):
-    players = ui.getPlayers(nPlayers)
-    for i in xrange(nPlayers):
+def create_players(game, n_players):
+    players = ui.get_players(n_players)
+    for i in xrange(n_players):
         game.players.append(p.Player(players[i]))
     return
 
@@ -18,11 +18,11 @@ def play_round(game):
     game.deal()
 
     for player in game.players:
-        player.currentHand = 0
-        for hand in player.handList:
-            while (not (hand.bustedHand or hand.finalHand)):
+        player.current_hand = 0
+        for hand in player.hand_list:
+            while (not (hand.busted or hand.final_hand)):
 
-                ui.printStatus(game)
+                ui.print_status(game)
                 action = ui.roundMenu(player, hand)
 
                 if (action == 'h'):
@@ -36,41 +36,41 @@ def play_round(game):
 
                 else:
                     # ui.py should take care of never ending here.
-                    print msg.unknownAction
+                    print msg.unknown_action
 
-            player.currentHand += 1
+            player.current_hand += 1
 
     # Dealer plays
-    while (game.dealer.handList[0].value < game.rules.dealerHandMinValue):
+    while (game.dealer.hand_list[0].value < game.rules.dealer_hand_min_value):
         game.dealer.hit(game.pack)
-        ui.printStatus(game)
+        ui.print_status(game)
 
     game.payout()
 
-    game.discardCardsInPlay()
-    game.roundCleanup()
+    game.discard_cards_in_play()
+    game.round_cleanup()
 
     return
 
 def new_game():
     print msg.new_game
 
-    nPlayers = ui.new_game()
+    n_players = ui.new_game()
 
     game = g.Game()
 
     # Let's try with more packs. 
-    for i in xrange(game.rules.numberOfPacks):
-        game.initPack()
+    for i in xrange(game.rules.number_of_packs):
+        game.init_pack()
 
-    game.shufflePack()
-    create_players(game, nPlayers)
+    game.shuffle_pack()
+    create_players(game, n_players)
 
-    playNextRound = True
+    play_next_round = True
 
-    while (playNextRound):
+    while (play_next_round):
         play_round(game)
-        playNextRound = ui.playNextRound()
+        play_next_round = ui.play_next_round()
 
     return
 
@@ -81,10 +81,10 @@ def options():
 if __name__ == "__main__":
 
     while (True):
-        action = ui.mainMenu()
+        action = ui.main_menu()
 
         if (action == 'q'):
-            print msg.quitMessage
+            print msg.quit_message
             break
 
         elif (action == 'n'):

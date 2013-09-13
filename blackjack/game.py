@@ -28,19 +28,21 @@ class Game(object):
 
         self.rules = r.Rules()
         self.pack = c.Pack()
-        self.discardPack = c.Pack()
+        self.discard_pack = c.Pack()
 
         self.dealer = p.Player('Dealer')
-        self.dealer.handList.append(c.Hand())
+        self.dealer.hand_list.append(c.Hand())
        
         self.players = []
+
+
 
     def betting(self):
         """Gets a bet from each player."""
 
         # Later on: implement a minimum bet.
         for player in self.players:
-            player.handList.append(c.Hand())
+            player.hand_list.append(c.Hand())
             player.bet(float(raw_input("Enter bet: ")))
 
         print "Betting finished."
@@ -52,14 +54,14 @@ class Game(object):
 
             card = None
             try:
-                card = self.pack.drawCard()
+                card = self.pack.draw_card()
             
             except IndexError:
                 self._shuffle_discard_pile_and_use_as_current_pack()
-                card = self.pack.drawCard()
+                card = self.pack.draw_card()
 
             finally:
-                self.dealer.handList[self.dealer.currentHand].putCard(card)
+                self.dealer.hand_list[self.dealer.current_hand].put_card(card)
 
 
             card = None
@@ -67,14 +69,14 @@ class Game(object):
                 print "Player", plr, "draws a card."
 
                 try: 
-                    card = self.pack.drawCard()
+                    card = self.pack.draw_card()
 
                 except IndexError:
                     self._shuffle_discard_pile_and_use_as_current_pack()
-                    card = self.pack.drawCard()
+                    card = self.pack.draw_card()
 
                 finally:
-                    plr.handList[plr.currentHand].putCard(card)
+                    plr.hand_list[plr.current_hand].put_card(card)
 
     def payout(self):
         """Pays winnings to each player."""
@@ -83,26 +85,26 @@ class Game(object):
 
            # todo: have dealer collect lost bets.
         for player in self.players:
-            for hand in player.handList:
+            for hand in player.hand_list:
                 if (hand.blackjackHand):
                     player.balance += hand.bet
-                    player.balance += hand.bet * self.rules.winBlackjackFactor
+                    player.balance += hand.bet * self.rules.win_blackjack_factor
                     print "Player got blackjack and won", 
 
-                elif (hand.bustedHand):
-                    if (self.dealer.handList[self.dealer.currentHand].bustedHand and self.rules.moneyBackOnDraw):
+                elif (hand.busted):
+                    if (self.dealer.hand_list[self.dealer.current_hand].busted and self.rules.moneyBackOnDraw):
                         player.balance += hand.bet
                         print "Busted, but so was the dealer. Bet returned."
                     else:
                         print "Hand was busted, no payout."
 
-                elif (hand.value > self.dealer.handList[self.dealer.currentHand].value or 
-                    self.dealer.handList[self.dealer.currentHand].bustedHand):
+                elif (hand.value > self.dealer.hand_list[self.dealer.current_hand].value or 
+                    self.dealer.hand_list[self.dealer.current_hand].busted):
                     player.balance += hand.bet
-                    player.balance += hand.bet*self.rules.winPayoutFactor
-                    print "Hand won, got bet and", hand.bet*self.rules.winPayoutFactor
+                    player.balance += hand.bet*self.rules.win_payout_factor
+                    print "Hand won, got bet and", hand.bet*self.rules.win_payout_factor
 
-                elif (hand.value == self.dealer.handList[self.dealer.currentHand].value and self.rules.moneyBackOnDraw):
+                elif (hand.value == self.dealer.hand_list[self.dealer.current_hand].value and self.rules.moneyBackOnDraw):
                     print "Draw! Bet returned."
                     player.balance += hand.bet
 
@@ -115,7 +117,7 @@ class Game(object):
         print "Adding a standard 52 card pack to play."
         for suit in c.suits:
             for number in c.numbers:
-                self.pack.putCard(c.Card(number, suit))
+                self.pack.put_card(c.Card(number, suit))
             
     def shuffle_pack(self):
         """Shuffles the pack in play."""
@@ -123,24 +125,24 @@ class Game(object):
 
     def discard_cards_in_play(self):
         for plr in self.players:
-            for hand in plr.handList:
+            for hand in plr.hand_list:
                 for i in xrange(len(hand)):
-                    self.discardPack.putCard(hand.drawCard())
+                    self.discard_pack.put_card(hand.draw_card())
 
-        for i in xrange(len(self.dealer.handList[self.dealer.currentHand])):
-            self.discardPack.putCard(self.dealer.handList[self.dealer.currentHand].drawCard())
+        for i in xrange(len(self.dealer.hand_list[self.dealer.current_hand])):
+            self.discard_pack.put_card(self.dealer.hand_list[self.dealer.current_hand].draw_card())
 
     def round_cleanup(self):
         for player in self.players:
-            del player.handList
-            player.handList = []
-            player.currentHand = 0
+            del player.hand_list
+            player.hand_list = []
+            player.current_hand = 0
 
     def _shuffle_discard_pile_and_use_as_current_pack(self):
         print "Ran out of cards! Shuffling the discarded cards."
         del self.pack
-        self.pack = self.discardPack
-        del self.discardPack
-        self.discardPack = c.Pack()
+        self.pack = self.discard_pack
+        del self.discard_pack
+        self.discard_pack = c.Pack()
         self.shuffle_pack()
 

@@ -7,8 +7,8 @@ class Player(object):
     Player attributes:
     name 		- Player name
     balance		- How much money the player has.
-    handList	- A list of hands the player has.
-    currentHand - Which hand is being handled at the moment.
+    hand_list	- A list of hands the player has.
+    current_hand - Which hand is being handled at the moment.
 
     Player actions:
     bet 		- Place a bet for a hand.
@@ -26,8 +26,8 @@ class Player(object):
     	"""Players are initialized with zero balance and an empty hand."""
     	self.name = name
         self.balance = 0.0
-        self.handList = []
-        self.currentHand = 0
+        self.hand_list = []
+        self.current_hand = 0
 
     def __str__(self):
     	return self.name
@@ -35,27 +35,27 @@ class Player(object):
     def bet(self, bet, handIndex = 0):
     	"""Places a bet on a hand owned. Bet is reduced from balance."""
         self.balance -= bet
-        self.handList[self.currentHand].bet += bet
+        self.hand_list[self.current_hand].bet += bet
 
         print "Bet", bet
 
     def stand(self, hand):
     	"""Finish playing this hand for this round."""
-        hand.finalHand = True
+        hand.final_hand = True
 
         print "Standing."
 
     def hit(self, pack):
     	"""Request a card from the dealer."""
         print "Hitting a card:",
-        self.handList[self.currentHand].putCard(pack.drawCard())
+        self.hand_list[self.current_hand].putCard(pack.drawCard())
 
     def double(self, pack):
     	"""Get one final card from the dealer and double the hand's bet."""
-        self.bet(self.handList[self.currentHand].bet)
-        #self.handList[self.currentHand].putCard(pack.drawCard())
+        self.bet(self.hand_list[self.current_hand].bet)
+        #self.hand_list[self.current_hand].putCard(pack.drawCard())
         self.hit(pack)
-        self.handList[self.currentHand].finalHand = True
+        self.hand_list[self.current_hand].final_hand = True
         
 
     def split(self):
@@ -68,7 +68,7 @@ class Player(object):
 
     def print_current_hand(self):
     	"""Print the current hand."""
-        print self.handList[self.currentHand]
+        print self.hand_list[self.current_hand]
 
 class HumanPlayer(Player):
     pass

@@ -110,9 +110,9 @@ class Hand(Pack):
         self.card_stack = []
 
         self.bet = 0.0
-        self.finalHand = False
+        self.final_hand = False
       # self.busted = False
-        self.blackjackHand = False
+        self.blackjack_hand = False
 
     # This _seems_ to just work for some reason... suspicious.
     # I'd like to have the value inside __init__ rather. 
@@ -133,7 +133,7 @@ class Hand(Pack):
     @property
     def busted(self):
         if (self.value > 21):
-            self.finalHand = True
+            self.final_hand = True
             return True
         else: 
             return False
@@ -146,14 +146,14 @@ class Hand(Pack):
         """Returns a string representation of the hand."""
 
         # TODO : reimplement with .join()
-        handString = ''
+        hand_string = ''
         for card in self.card_stack:
-            if (handString == ''):
-                handString += str(card)
+            if (hand_string == ''):
+                hand_string += str(card)
             else:
-                handString += ', ' + str(card)
+                hand_string += ', ' + str(card)
 
-        return handString
+        return hand_string
 
 
 
