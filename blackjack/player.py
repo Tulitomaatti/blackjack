@@ -32,22 +32,20 @@ class Player(object):
     def __str__(self):
     	return self.name
 
-    def bet(self, bet, handIndex = 0):
+    def bet(self, bet, handIndex=0):
     	"""Places a bet on a hand owned. Bet is reduced from balance."""
+        # Should negative bets be prevented here, in game, or in ui? 
         self.balance -= bet
         self.hand_list[self.current_hand].bet += bet
 
-        print "Bet", bet
 
     def stand(self, hand):
     	"""Finish playing this hand for this round."""
         hand.final_hand = True
 
-        print "Standing."
 
     def hit(self, pack):
     	"""Request a card from the dealer."""
-        print "Hitting a card:",
         self.hand_list[self.current_hand].put_card(pack.draw_card())
 
     def double(self, pack):

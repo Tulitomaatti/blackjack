@@ -42,8 +42,15 @@ class Game(object):
 
         # Later on: implement a minimum bet.
         for player in self.players:
+            # Maybe empty hands should be created before the betting function is called?
             player.hand_list.append(c.Hand())
-            player.bet(float(raw_input("Enter bet: ")))
+
+            # bet = ui.get_bet_from_player
+            bet = -1.0
+            while (bet < 0):
+                bet = float(raw_input("Enter bet: "))
+
+            player.bet(bet)
 
 
     def deal(self):

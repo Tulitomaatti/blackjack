@@ -32,8 +32,6 @@ class Pack(object):
     shuffle()           - Shuffles the pack.
     put_card()           - Puts a card on top of the pack.
     draw_card([amount])  - Draws cards from the top.
-
-    print_pack()         - Prints the cards in the pack.
     """
 
     def __init__(self):
@@ -61,14 +59,10 @@ class Pack(object):
         # Would be nice to handle IndexError here but that'd 
         # require handing game objects to here which sounds silly.
             card = self.card_stack.pop()
-
-
-            print "Drew", card
             return card
 
         else: 
             # things that call this with amount > 1 have to be able to accept lists?
-            print "Drawing", amount, "cards."
             cardList = []
             for i in xrange(amount):
                 cardList.append(self.card_stack.pop())
@@ -93,15 +87,6 @@ class Pack(object):
         return True
 
 
-    def print_pack(self):
-        """Prints all cards in the pack and states the number of
-        cards."""
-
-        for card in self.card_stack:
-            print card
-        print "A total of", len(self.card_stack), "cards."
-
-
 class Hand(Pack):
     """A hand of cards. Has a bet and game-related attributes."""
 
@@ -111,11 +96,9 @@ class Hand(Pack):
 
         self.bet = 0.0
         self.final_hand = False
-      # self.busted = False
         self.blackjack_hand = False
 
-    # This _seems_ to just work for some reason... suspicious.
-    # I'd like to have the value inside __init__ rather. 
+
     @property
     def value(self):
         x = 0

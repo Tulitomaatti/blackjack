@@ -6,6 +6,7 @@ import ui
 from ui import Texts as msg
 
 
+
 def create_players(game, n_players):
     players = ui.get_players(n_players)
     for i in xrange(n_players):
