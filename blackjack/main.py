@@ -24,7 +24,7 @@ def play_round(game):
             while (not (hand.busted or hand.final_hand)):
 
                 ui.print_status(game)
-                action = ui.roundMenu(player, hand)
+                action = ui.round_menu(player, hand)
 
                 if (action == 'h'):
                     player.hit(game.pack)
@@ -49,6 +49,10 @@ def play_round(game):
     game.payout()
 
     game.discard_cards_in_play()
+
+    # Here until nicer UI. 
+    ui.print_players(game)
+
     game.round_cleanup()
 
     return

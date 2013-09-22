@@ -84,7 +84,7 @@ class Pack(object):
                 if self.card_stack[i] != other.card_stack[i]:
                     return False
 
-            return True
+        return True
 
 
 class Hand(Pack):

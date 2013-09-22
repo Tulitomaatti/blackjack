@@ -3,6 +3,7 @@
 import cardpackhand as c
 import player as p
 import rules as r
+import ui
 
 
 class Game(object):
@@ -45,10 +46,12 @@ class Game(object):
             # Maybe empty hands should be created before the betting function is called?
             player.hand_list.append(c.Hand())
 
+
             # bet = ui.get_bet_from_player
+            # check negative or minimum bet here? 
             bet = -1.0
             while (bet < 0):
-                bet = float(raw_input("Enter bet: "))
+                bet = ui.get_bet(player)
 
             player.bet(bet)
 
@@ -88,12 +91,12 @@ class Game(object):
 
         for player in self.players:
             for hand in player.hand_list:
-                if (hand.blackjackHand):
+                if (hand.blackjack_hand):
                     player.balance += hand.bet
                     player.balance += hand.bet * self.rules.win_blackjack_factor
 
                 elif (hand.busted):
-                    if (self.dealer.hand_list[self.dealer.current_hand].busted and self.rules.moneyBackOnDraw):
+                    if (self.dealer.hand_list[self.dealer.current_hand].busted and self.rules.money_back_on_draw):
                         player.balance += hand.bet
                     else:
                         #hand was busted. no payout needed, because bets are already taken when betting.
@@ -104,7 +107,7 @@ class Game(object):
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor
 
-                elif (hand.value == self.dealer.hand_list[self.dealer.current_hand].value and self.rules.moneyBackOnDraw):
+                elif (hand.value == self.dealer.hand_list[self.dealer.current_hand].value and self.rules.money_back_on_draw):
                     player.balance += hand.bet
                 else:
                     #hand lost. no payout needed, because bets are already taken when betting.

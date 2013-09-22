@@ -46,7 +46,8 @@ def main_menu():
     return action
 
 def round_menu(player, hand):
-    print "Player", str(player) + "'s turn, hand #" + str(player.currentHand + 1) +" :", hand
+    print "Player", str(player) + "'s turn, hand #" + str(player.current_hand + 1) +": value:", player.hand_list[player.current_hand].value
+    print hand
     action = str(raw_input(Texts.action_prompt + Texts.round_actions))
     if action not in Actions.valid_round_actions:
         return round_menu(player, hand)
@@ -79,16 +80,22 @@ def options():
     else:
         return action
 
+def get_bet(player):
+    bet = float(raw_input(player.name + ", Enter bet: "))
+
+    # TODO something about negative bets here
+    return bet
 
 def print_status(game):
     print "Status:"
-    print "Dealer's hand:\t", game.dealer.handList[game.dealer.currentHand]
-    print "Dealer's hand value:", game.dealer.handList[game.dealer.currentHand].value
+    print "Dealer's hand:\t", game.dealer.hand_list[game.dealer.current_hand]
+    print "Dealer's hand value:", game.dealer.hand_list[game.dealer.current_hand].value
     print
     for plr in game.players:
         i = 0
-        print "Player", plr, "has", len(plr.handList), "hands"
-        for hand in plr.handList:
+        print plr, "balance:", plr.balance, 
+        print plr, "has", len(plr.hand_list), "hands:"
+        for hand in plr.hand_list:
             i += 1
             print "Player", plr, "hand #" + str(i), "is", hand
             print "With a value of", hand.value
@@ -96,6 +103,10 @@ def print_status(game):
         print
     print
 
+def print_players(game):
+    for plr in game.players:
+        print plr.name, "balance: ", plr.balance
+    print
 
 def print_pack(pack):
     """Prints all cards in the pack and states the number of
