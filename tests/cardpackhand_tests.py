@@ -72,25 +72,48 @@ def test_pack():
     # Cards come out of the pack in the reverse order we put them in.
     assert_equal(cards, [card3, card2, card1])
 
+def test_pack_equality():
+    a = Pack()
+    b = Pack()
+
+    # What's the difference with these two? 
+    assert_true(a == b)
+    assert_equal(a, b)
+
+    assert_is_not(a, b)
+
+    c1, c2, c3 = create_some_cards()
+
+    a.put_card(c1)
+
+    assert_false(a == b)
+
+    b.put_card(c3)
+
+    assert_true(a == b)
+    assert_equal(a, b)
+
+    a.put_card(c2)
+
 def test_pack_shuffling():
     a = Pack()
     b = Pack()
 
-    # init_pack(a)
-    # init_pack(b)
+    init_pack(a)
+    init_pack(b)
 
     # Something fishy around here. This should fail as it is. 
     # Have to inspect __eq__ in pack and card.
-    card = Card(1,'a')
+#card = Card(1,'a')
 
-    a.put_card(card)
-    b.put_card(card)
+    # a.put_card(card)
+    # b.put_card(card)
 
-    assert_true(a == b)
+    assert_equal(a, b)
 
-    shuffle_pack(a)
+#shuffle_pack(a)
 
-    assert_true(a == b)
+   # assert_true(a == b)
 
     # Shuffling a pack should (usually) give a differently ordered aepack
 
