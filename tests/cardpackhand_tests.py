@@ -114,11 +114,12 @@ def test_pack_shuffling():
 
     assert_equal(a, b)
 
-#shuffle_pack(a)
+    shuffle_pack(a)
 
    # assert_true(a == b)
 
-    # Shuffling a pack should (usually) give a differently ordered aepack
+   # Shuffling a pack should (usually) give a differently ordered aepack
+    assert_not_equal(a, b)
 
 def test_hand():
     h = Hand()
