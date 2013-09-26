@@ -21,6 +21,9 @@ class Card(object):
         # Easier than always fetching numbers & suits
         return (self.number == other.number and self.suit == other.suit)
 
+    def __ne__(self, other):
+        return not self.__eq__
+
 
 class Pack(object):
     """A pack of playing cards.
