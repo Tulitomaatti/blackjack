@@ -4,6 +4,9 @@ from blackjack.cardpackhand import Pack
 from blackjack.cardpackhand import Hand
 from blackjack.cardpackhand import suits
 from blackjack.cardpackhand import numbers
+from blackjack.rules import value
+from blackjack.rules import busted
+from blackjack.rules import Rules
 
 
 # def setup(): 
@@ -137,22 +140,21 @@ def test_hand():
         else:
             card_value_sum += h.card_stack[i].number
 
-    assert_equal(h.value, card_value_sum)
+    assert_equal(value(h), card_value_sum)
 
     # Hand not busted yet, 1+k+1 = 12
-    assert_false(h.busted)
+    assert_false(busted(h, Rules()))
 
     h.put_card(card2)
 
     # hands get busted after one more King( 12 + 10 = 22)
-    assert_true(h.busted)
+    assert_true(busted(h, Rules()))
 
 
 def test_hand_negative_bet():
     h = Hand()
     # This should fail at the moment since nothing is done to ensure positive bets.
     assert_raises(Exception, set_negative_bet, h)
-
 
 def test_hand_bet_doubling():
     h = Hand()

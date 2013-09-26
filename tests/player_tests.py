@@ -3,6 +3,8 @@ from blackjack.player import Player
 from blackjack.cardpackhand import Hand
 from blackjack.cardpackhand import Pack
 from cardpackhand_tests import init_pack
+from blackjack.rules import busted
+from blackjack.rules import Rules
 
 # def setup(): 
 #     pass
@@ -40,7 +42,7 @@ def test_player_hitting():
     p = Player('Fooman')
     h = Hand()
     pack = Pack()
-    length = len(pack)
+#    length = len(pack)
     
     init_pack(pack)
     p.hand_list.append(h)
@@ -52,7 +54,7 @@ def test_player_hitting():
     hit_20_cards(p, pack)
 
     # Should bust from hitting 20 cards. 
-    assert_true(p.hand_list[0].busted)
+    assert_true(busted(p.hand_list[0], Rules()))
 
 
 def test_player_doubling():

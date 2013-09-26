@@ -73,15 +73,16 @@ class Pack(object):
         return len(self.card_stack)
 
     def __eq__(self, other):
-        # TODO : fix this
+        # TODO : fix this. Will return false if same card but different object.
         if (len(self) != len(other)): 
             return False
+
         elif (len(self) == 0 and len(other) == 0):
             return True
 
         else:
             for i in xrange(len(self)):
-                if self.card_stack[i] != other.card_stack[i]:
+                if (self.card_stack[i] != other.card_stack[i]):
                     return False
 
         return True
