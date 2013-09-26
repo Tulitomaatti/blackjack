@@ -18,7 +18,7 @@ def read_it(it):
 def save_it(obj, it):
     """Save it to a file."""
     try:
-        f = open(it + BLACKJACK_FILE_EXTENSION, "wb")
+        f = open(it + BLACKJACK_FILE_EXTENSION, "a+b")
     except IOError():
         print "Could not open", it, "file for writing."
         print it, "not written and might be lost."
@@ -43,9 +43,9 @@ def read_players():
     while(True):
         try:
             players.append(pickle.load(f))
-        except EOFError():
+        except EOFError:
             break
-        
+
 
     f.close()
     return players 
