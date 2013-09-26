@@ -23,7 +23,7 @@ def play_round(game):
         for hand in player.hand_list:
             while (not (hand.busted or hand.final_hand)):
 
-                ui.print_status(game)
+                ui.print_status(game)   
                 action = ui.round_menu(player, hand)
 
                 if (action == 'h'):
