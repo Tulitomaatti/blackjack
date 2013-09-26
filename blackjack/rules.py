@@ -50,8 +50,8 @@ def value(hand):
     return x
 
 
-def busted(hand):
-    if (hand.value > Rules.hand_max_value):
+def busted(hand, rules):
+    if (value(hand) > rules.hand_max_value):
         hand.final_hand = True
         return True
     else: 

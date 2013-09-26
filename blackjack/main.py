@@ -2,6 +2,7 @@
 
 import game as g
 import player as p
+import rules as r
 import ui
 from ui import Texts as msg
 
@@ -21,7 +22,7 @@ def play_round(game):
     for player in game.players:
         player.current_hand = 0
         for hand in player.hand_list:
-            while (not (game.r.busted(hand) or hand.final_hand)):
+            while (not (r.busted(hand, game.rules) or hand.final_hand)):
 
                 ui.print_status(game)   
                 action = ui.round_menu(player, hand)
@@ -42,7 +43,7 @@ def play_round(game):
             player.current_hand += 1
 
     # Dealer plays
-    while (game.r.value(game.dealer.hand_list[0]) < game.r.dealer_hand_min_value):
+    while (r.value(game.dealer.hand_list[0]) < game.rules.dealer_hand_min_value):
         game.dealer.hit(game.pack)
         ui.print_status(game)
 

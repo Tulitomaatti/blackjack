@@ -99,15 +99,15 @@ class Game(object):
                     player.balance += hand.bet
                     player.balance += hand.bet * self.rules.win_blackjack_factor
 
-                elif (r.busted(hand)):
-                    if (r.busted(dealer_hand) and self.rules.money_back_on_draw):
+                elif (r.busted(hand, self.rules)):
+                    if (r.busted(dealer_hand, self.rules) and self.rules.money_back_on_draw):
                         player.balance += hand.bet
                     else:
                         # Give the bet to the dealer. 
                         self.dealer.balance += hand.bet
 
                 elif (r.value(hand) > r.value(dealer_hand) or
-                      r.busted(dealer_hand)):
+                      r.busted(dealer_hand, self.rules)):
 
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor

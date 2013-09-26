@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import rules as r
 
 class Texts(object):
     action_prompt = "Choose action: "
@@ -46,7 +47,7 @@ def main_menu():
     return action
 
 def round_menu(player, hand):
-    print "Player", str(player) + "'s turn, hand #" + str(player.current_hand + 1) +": value:", player.hand_list[player.current_hand].value
+    print "Player", str(player) + "'s turn, hand #" + str(player.current_hand + 1) +": value:", r.value(player.hand_list[player.current_hand])
     print hand
     action = str(raw_input(Texts.action_prompt + Texts.round_actions))
     if action not in Actions.valid_round_actions:
@@ -89,7 +90,7 @@ def get_bet(player):
 def print_status(game):
     print "Status:"
     print "Dealer's hand:\t", game.dealer.hand_list[game.dealer.current_hand]
-    print "Dealer's hand value:", game.dealer.hand_list[game.dealer.current_hand].value
+    print "Dealer's hand value:", r.value(game.dealer.hand_list[game.dealer.current_hand])
     print
     for plr in game.players:
         i = 0
@@ -98,7 +99,7 @@ def print_status(game):
         for hand in plr.hand_list:
             i += 1
             print "Player", plr, "hand #" + str(i), "is", hand
-            print "With a value of", hand.value
+            print "With a value of", r.value(hand)
             print
         print
     print
