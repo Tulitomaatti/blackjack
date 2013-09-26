@@ -23,7 +23,7 @@ def save_it(obj, it):
         print "Could not open", it, "file for writing."
         print it, "not written and might be lost."
 
-    pickle.dump(it, f)
+    pickle.dump(obj, f)
     f.close()
 
 # This one is different. I couldn't figure out a nice way to read a single
@@ -45,6 +45,7 @@ def read_players():
             players.append(pickle.load(f))
         except EOFError():
             break
+        
 
     f.close()
     return players 
