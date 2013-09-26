@@ -31,10 +31,28 @@ class Rules(object):
             "Number of packs used: " + str(self.number_of_packs)])
 
 
+def value(hand):
+    """Returns value of the hand."""
+    x = 0
+    for i in xrange(len(hand)):
+        if (hand.card_stack[i].number > 10):
+            # In blackjack J, Q and K equal to 10 points.
+            x += 10
+        else:
+            # Otherwise hand value just equals the sum of the card numbers.
+            x += hand.card_stack[i].number
 
-    def value(hand):
-        """Return hand value. """
-        # First check for aces/soft hands
+    # Still to be figured out: how to deal with soft values? 
 
-        # Otherwise just calculate value as usually. 
-        pass
+    # People stop playing when they win, right?
+    if (x == 21): hand.final_hand = True
+
+    return x
+
+
+def busted(hand):
+    if (hand.value > Rules.hand_max_value):
+        hand.final_hand = True
+        return True
+    else: 
+        return False

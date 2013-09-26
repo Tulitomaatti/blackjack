@@ -86,28 +86,34 @@ class Game(object):
     def payout(self):
         """Pays winnings to each player."""
 
-           # Maybe create functions like bustedPayout() and blackjackPayout()? 
-           # todo: have dealer collect lost bets.
+       # Maybe create functions like bustedPayout() and blackjackPayout()? 
+       # todo: have dealer collect lost bets.
+
+        # For readability. 
+        dealer_hand = self.dealer.hand_list[self.dealer.current_hand]
 
         for player in self.players:
             for hand in player.hand_list:
                 if (hand.blackjack_hand):
+                    # Draw doesn't get checked here, has to be moved.
                     player.balance += hand.bet
                     player.balance += hand.bet * self.rules.win_blackjack_factor
 
-                elif (hand.busted):
-                    if (self.dealer.hand_list[self.dealer.current_hand].busted and self.rules.money_back_on_draw):
+                elif (r.busted(hand)):
+                    if (r.busted(dealer_hand) and self.rules.money_back_on_draw):
                         player.balance += hand.bet
                     else:
-                        #hand was busted. no payout needed, because bets are already taken when betting.
-                        pass
+                        # Give the bet to the dealer. 
+                        self.dealer.balance += hand.bet
 
-                elif (hand.value > self.dealer.hand_list[self.dealer.current_hand].value or 
-                    self.dealer.hand_list[self.dealer.current_hand].busted):
+                elif (r.value(hand) > r.value(dealer_hand) or
+                      r.busted(dealer_hand)):
+
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor
 
-                elif (hand.value == self.dealer.hand_list[self.dealer.current_hand].value and self.rules.money_back_on_draw):
+                elif (r.value(hand) == r.value(dealer_hand) and
+                      self.rules.money_back_on_draw):
                     player.balance += hand.bet
                 else:
                     #hand lost. no payout needed, because bets are already taken when betting.

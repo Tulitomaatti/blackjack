@@ -99,27 +99,27 @@ class Hand(Pack):
         self.blackjack_hand = False
 
 
-    @property
-    def value(self):
-        x = 0
+    # Moved to rules, a hand of cards doesn't need to know about the rules?
 
-        for i in xrange(len(self)):
-            if (self.card_stack[i].number > 10):
-                # In blackjack J, Q and K equal to 10 points.
-                x += 10
-            else:
-                # Otherwise hand value just equals the sum of the card numbers.
-                x += self.card_stack[i].number
+    # @property
+    # def value(self):
+    #     x = 0
+    #     for i in xrange(len(self)):
+    #         if (self.card_stack[i].number > 10):
+    #             # In blackjack J, Q and K equal to 10 points.
+    #             x += 10
+    #         else:
+    #             # Otherwise hand value just equals the sum of the card numbers.
+    #             x += self.card_stack[i].number
+    #     return x
 
-        return x
-
-    @property
-    def busted(self):
-        if (self.value > 21):
-            self.final_hand = True
-            return True
-        else: 
-            return False
+    # @property
+    # def busted(self):
+    #     if (self.value > 21):
+    #         self.final_hand = True
+    #         return True
+    #     else: 
+    #         return False
 
     def double_bet(self):
         """Doubles the bet of the hand."""
