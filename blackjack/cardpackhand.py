@@ -76,7 +76,6 @@ class Pack(object):
         return len(self.card_stack)
 
     def __eq__(self, other):
-        # TODO : fix this. Will return false if same card but different object.
         if (len(self) != len(other)): 
             return False
 
@@ -101,29 +100,6 @@ class Hand(Pack):
         self.bet = 0.0
         self.final_hand = False
         self.blackjack_hand = False
-
-
-    # Moved to rules, a hand of cards doesn't need to know about the rules?
-
-    # @property
-    # def value(self):
-    #     x = 0
-    #     for i in xrange(len(self)):
-    #         if (self.card_stack[i].number > 10):
-    #             # In blackjack J, Q and K equal to 10 points.
-    #             x += 10
-    #         else:
-    #             # Otherwise hand value just equals the sum of the card numbers.
-    #             x += self.card_stack[i].number
-    #     return x
-
-    # @property
-    # def busted(self):
-    #     if (self.value > 21):
-    #         self.final_hand = True
-    #         return True
-    #     else: 
-    #         return False
 
     def double_bet(self):
         """Doubles the bet of the hand."""
