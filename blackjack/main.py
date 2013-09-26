@@ -65,6 +65,8 @@ def new_game():
 
     n_players = ui.new_game()
 
+
+    # For now > 4. TODO : Check if we have enough cards coming to play.
     if (n_players > 4): raise Exception("Too many players.")
  
 
