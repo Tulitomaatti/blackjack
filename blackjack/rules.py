@@ -23,7 +23,7 @@ class Rules(object):
 
     def __str__(self):
         # This could be also done by some fancy dir(obj) iterating but... yeah. 
-        return '\n'.join(["Money back on draw: " + str(self.money_back_on_draw),
+        return '\n'.join(["\nRules:", "Money back on draw: " + str(self.money_back_on_draw),
             "Dealer hand minimum value: "+ str(self.dealer_hand_min_value),
             "Win payout factor: " + str(self.win_payout_factor),
             "Blackjack win payout factor: "+ str(self.win_blackjack_factor),

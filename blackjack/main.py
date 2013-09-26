@@ -10,9 +10,13 @@ from ui import Texts as msg
 
 def create_players(game, n_players):
     players = ui.get_players(n_players)
+
+    # Check here if we have enough cards in play. 
+    # For now just quit if more than 4 players D:
+
     for i in xrange(n_players):
         game.players.append(p.Player(players[i]))
-    return
+
 
 def play_round(game):
 
@@ -56,12 +60,13 @@ def play_round(game):
 
     game.round_cleanup()
 
-    return
-
 def new_game():
     print msg.new_game
 
     n_players = ui.new_game()
+
+    if (n_players > 4): raise Exception("Too many players.")
+ 
 
     game = g.Game()
 
@@ -76,12 +81,17 @@ def new_game():
 
     while (play_next_round):
         play_round(game)
+
+        # TODO Here: save players and game stats. 
+
         play_next_round = ui.play_next_round()
 
-    return
 
 def options():
-    ui.options()
+    if (ui.options() == 'r'):
+        print r.Rules()
+    else:
+        pass
 
 
 if __name__ == "__main__":

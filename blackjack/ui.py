@@ -25,8 +25,6 @@ class Texts(object):
     options_menu = """Blackjack - Options
 
     show (r)ules
-
-
     """
     
 
