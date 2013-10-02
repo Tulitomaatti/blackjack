@@ -18,7 +18,7 @@ def read_it(it):
 def save_it(obj, it):
     """Save it to a file."""
     try:
-        f = open(it + BLACKJACK_FILE_EXTENSION, "a+b")
+        f = open(it + BLACKJACK_FILE_EXTENSION, "wb")
     except IOError():
         print "Could not open", it, "file for writing."
         print it, "not written and might be lost."
