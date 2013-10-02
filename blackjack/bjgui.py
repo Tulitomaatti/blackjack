@@ -1,65 +1,132 @@
 # -*- coding: utf-8 -*-
+
+# Going through zetcode tutorials before doing anything real for the blackjack.
 from PySide.QtCore import *
 from PySide.QtGui import *
 
 import sys
 
-class MainWindow(QMainWindow):
-    def __init__(self): 
-        super(MainWindow, self).__init__()
-        self.initUI()
+if __name__ == '__main__':
+    a = QApplication(sys.argv)
+    w = Boxlayout()
+    a.exec_()
+    sys.exit()
 
-    def initUI(self):
+
+
+
+
+# class Boxlayout(QWidget):
+#     def __init__(self): 
+#         super(Boxlayout, self).__init__()
+
+#         self.initUI()
+
+#     def initUI(self):
+#         butan = QPushButton('HITME')
+#         diebutan = QPushButton('DIE PIE!')
+#         mehbutan = QPushButton('meh :3')
+
+
+#         diebutan.clicked.connect(QCoreApplication.instance().quit)
+
+
+#         hbox = QHBoxLayout()
+
+#         hbox.addStretch(1)
+#         hbox.addWidget(butan)
+#         hbox.addWidget(diebutan)
+
+#         hbox2 = QHBoxLayout()
+#         hbox2.addStretch(1)
+#         hbox2.addWidget(mehbutan)
+#         hbox2.addStretch(2)
+
+
+#         vbox = QVBoxLayout()
+#         vbox.addStretch(1)
+#         vbox.addLayout(hbox2)
+#         vbox.addStretch(1)
+#         vbox.addLayout(hbox)
+
+
+#         self.setLayout(vbox)
+
+#         self.setGeometry(300,300,300,150)
+#         self.show()
+
+
+# class abslayout(QWidget):
+#     def __init__(self): 
+#         super(abslayout, self).__init__()
+#         self.initUI()
+
+#     def initUI(self):
         
-        editor = QTextEdit()
+#         l1 = QLabel('coding', self)
+#         l1.move(15,10)
+
+#         l2 = QLabel('cooooding more', self)
+#         l2.move(35,40)
+
+#         l3 = QLabel('for koodarens', self)
+#         l3.move(55,70)
+
+#         self.setGeometry(300,300,250,150)
+#         self.setWindowTitle('Absolute positioning.')
+#         self.show()
+
+
+ #   class MainWindow(QMainWindow):
+#     def __init__(self): 
+#         super(MainWindow, self).__init__()
+#         self.initUI()
+
+#     def initUI(self):
         
-        self.setCentralWidget(editor)
+#         editor = QTextEdit()
+        
+#         self.setCentralWidget(editor)
 
-        exitAction = QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+6')
-        exitAction.setStatusTip("I'll die if you click me.")
-        exitAction.triggered.connect(self.close)
+#         exitAction = QAction('Exit', self)
+#         exitAction.setShortcut('Ctrl+6')
+#         exitAction.setStatusTip("I'll die if you click me.")
+#         exitAction.triggered.connect(self.close)
 
-        self.statusBar()
-
-
-        toolbar = self.addToolBar('Exit')
-        toolbar.addAction(exitAction)
+#         self.statusBar()
 
 
-        menubar = QMenuBar(None)
-    #    menubar.setMenuRole(0)
+#         toolbar = self.addToolBar('Exit')
+#         toolbar.addAction(exitAction)
 
 
- # #       self.menubar = self.menuBar()
+#         menubar = QMenuBar(None)
+#     #    menubar.setMenuRole(0)
 
- #        file_menu = menubar.addMenu('&Filde')
- #        file_menu.addAction(exitAction)
+
+#  # #       self.menubar = self.menuBar()
+
+#  #        file_menu = menubar.addMenu('&Filde')
+#  #        file_menu.addAction(exitAction)
 
  
 
-        menu = self.menuBar()
-        filemenu = menu.addMenu('&File')
+#         menu = self.menuBar()
+#         filemenu = menu.addMenu('&File')
 
-        #Prevent OS X from abducting the menu item:
-        exitAction.setMenuRole(QAction.MenuRole.NoRole)
+#         #Prevent OS X from abducting the menu item:
+#         exitAction.setMenuRole(QAction.MenuRole.NoRole)
 
-        filemenu.addAction(exitAction)
-        foobarmenu = menu.addMenu('&Foobar')
-        # menu.addMenu('&Quiche')
+#         filemenu.addAction(exitAction)
+#         foobarmenu = menu.addMenu('&Foobar')
+#         # menu.addMenu('&Quiche')
         
         
 
 
-        self.setGeometry(100,500,400,300)
-        self.show()
+#         self.setGeometry(100,500,400,300)
+#         self.show()
 
-
-if __name__ == '__main__':
-    a = QApplication(sys.argv)
-    w = MainWindow()
-    a.exec_()
-    sys.exit()
 
 # # not stylish: 
 
