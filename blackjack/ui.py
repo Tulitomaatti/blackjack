@@ -93,29 +93,39 @@ def get_players_for_game(players):
     # caution: bad code incoming: hard to read nesting & too long method
     # there has to be a better way to do this
 
-    while (action != 'n' and n < 5):
+    while (len(selected) < 4 and action != 'n'):
         name = str(raw_input(Texts.player_name_prompt))
 
+        action = ''
+        plr_selected = False
+        plr_created = False
         aux_plr = p.Player(name)
 
         for plr in players:
+            if plr_selected: break
+
             # Check if we already added it
             for sel_plr in selected:
                 if aux_plr == sel_plr:
                     print Texts.player_already_selected
-                    continue
+                    plr_selected = True
+                    break
                     # Maybe propose removal here.
+
+            if plr_selected: break
 
             # Check if we can find it
             for plr in players:
                 if aux_plr == plr:
                     selected.append(plr)
-                    n += 1 
-                    continue
-                    
+                    print "Player", plr, "selected."
+                    plr_selected = True
+                    break
+            
+            if plr_selected: break      
 
             # If couldn't find, maybe create new player.
-            if len(selected) != n + 1:
+            if not plr_selected:
                 print Texts.player_not_found
 
                 action = str(raw_input(Texts.create_new_player_prompt))
@@ -125,8 +135,14 @@ def get_players_for_game(players):
                     players.append(new_plr)
                     fops.save_players(players)
                     selected.append(new_plr)
-                    n += 1
+                    print "Player", new_plr, "created and selected."
+                    plr_selected = plr_created = True
                     action = ''
+
+                elif action == 'n':
+                    break
+
+            if plr_selected: break
 
         while (action != 'y' and action != 'n'):
             action = str(raw_input(Texts.more_players_prompt))
