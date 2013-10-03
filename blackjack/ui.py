@@ -3,6 +3,8 @@ import rules as r
 import player as p
 import file_ops as fops
 
+import pdb
+
 class Texts(object):
     action_prompt = "Choose action: "
     round_actions = "(h)it, (s)tand, or (d)ouble? "
@@ -87,6 +89,7 @@ def get_players_for_game(players):
 
     print Texts.please_select_players
     print "Available players: "
+#    pdb.set_trace()
     print_player_list(players)
 
 

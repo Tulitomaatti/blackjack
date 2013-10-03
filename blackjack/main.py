@@ -3,19 +3,23 @@
 import game as g
 import player as p
 import rules as r
+import file_ops as f
 import ui
 from ui import Texts as msg
 
 
 # Redo player logic to read players from a list / UI 
 def create_players(game, n_players):
-    players = ui.get_players(n_players)
+    # For now, n_players does nothing.
+
+    players = f.read_players()
+    selected = ui.get_players_for_game(players)
 
     # Check here if we have enough cards in play. 
     # For now just quit if more than 4 players D:
 
-    for i in xrange(n_players):
-        game.players.append(p.Player(players[i]))
+    for sel in selected:
+        game.players.append(sel)
 
 
 # Should be moved to game.py ?
@@ -79,6 +83,7 @@ def new_game():
         game.init_pack()
 
     game.shuffle_pack()
+
     create_players(game, n_players)
 
     play_next_round = True
