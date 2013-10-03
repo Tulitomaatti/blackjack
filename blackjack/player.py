@@ -43,6 +43,12 @@ class Player(object):
     def __str__(self):
     	return self.name
 
+    def __eq__(self, other):
+        return (self.name == other.name)
+
+    def __ne__(self, other):
+        return (self.name != other.name)
+
     def bet(self, bet, handIndex=0):
     	"""Places a bet on a hand owned. Bet is reduced from balance."""
         # Should negative bets be prevented here, in game, or in ui? 

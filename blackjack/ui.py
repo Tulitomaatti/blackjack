@@ -74,58 +74,105 @@ def get_players(nPlayers):
     return players
 
 
+def print_player_list(players):
+    for plr in players:
+        print plr.name+",",
+    print
+
+
 def get_players_for_game(players):
     selected = []
     n = 0
+    action = ''
 
     print Texts.please_select_players
+    print "Available players: "
+    print_player_list(players)
 
 
     # caution: bad code incoming: hard to read nesting & too long method
+    # there has to be a better way to do this
 
-    action = ''
     while (action != 'n' and n < 5):
         name = str(raw_input(Texts.player_name_prompt))
 
-        # there has to be a better way to do this: 
+        aux_plr = p.Player(name)
 
-        # Find the player we requested.
-        for player in players:
-            if player.name == name:
+        for plr in players:
+            # Check if we already added it
+            for sel_plr in selected:
+                if aux_plr == sel_plr:
+                    print Texts.player_already_selected
+                    continue
+                    # Maybe propose removal here.
 
-                # Check if the player is already selected 
-                for selected_player in selected:
-                    if selected_player.name == name:
-                        print Texts.player_already_selected
-                        action = str(raw_input(Texts.remove_player_from_selection))
+            # Check if we can find it
+            for plr in players:
+                if aux_plr == plr:
+                    selected.append(plr)
+                    n += 1 
+                    continue
+                    
 
-                        if action == 'y':
-                            # Remove player from selection
-                            # selected[] would create a new list. [:] assigns in place.
-                            selected[:] = [plr for plr in selected if not plr.name == name]
-                            action = ''
-                            n -= 1
-                        else: action = ''
+            # If couldn't find, maybe create new player.
+            if len(selected) != n + 1:
+                print Texts.player_not_found
 
-                # Otherwise just append the player
-                selected.append(player)
-                n += 1
+                action = str(raw_input(Texts.create_new_player_prompt))
 
-        # If no player was added, maybe create one?
-        if len(selected) != n + 1:
-            print Texts.player_not_found
-            action = str(raw_input(Texts.player_name_prompt))
-            if action == 'y':
-                new_player = p.Player(name)
-                players.append(new_player)
-                fops.save_players(players)
-
-                selected.append(new_player)
-                n += 1
-            else: action = ''
+                if action == 'y':
+                    new_plr = p.Player(name)
+                    players.append(new_plr)
+                    fops.save_players(players)
+                    selected.append(new_plr)
+                    n += 1
+                    action = ''
 
         while (action != 'y' and action != 'n'):
             action = str(raw_input(Texts.more_players_prompt))
+
+
+        # 
+        # # Find the player we requested.
+        # for player in players:
+        #     if player.name == name:
+
+        #         # Check if the player is already selected 
+        #         for selected_player in selected:
+        #             if selected_player.name == player.name:
+        #                 print Texts.player_already_selected
+        #                 action = str(raw_input(Texts.remove_player_from_selection))
+
+        #                 if action == 'y':
+        #                     # Remove player from selection
+        #                     # selected[] would create a new list. [:] assigns in place.
+        #                     selected[:] = [plr for plr in selected if not plr.name == name]
+        #                     action = ''
+        #                     n -= 1
+        #                     continue
+        #                 else: action = ''
+
+        #         # Otherwise just append the player
+        #         selected.append(player)
+        #         print "Added player", player.name
+        #         n += 1
+        
+
+        # # If no player was added, maybe create one?
+        # if len(selected) != n:
+        #     print Texts.player_not_found
+        #     action = str(raw_input(Texts.create_new_player_prompt))
+        #     if action == 'y':
+        #         new_player = p.Player(name)
+        #         players.append(new_player)
+        #         fops.save_players(players)
+
+        #         selected.append(new_player)
+        #         n += 1
+        #     else: action = ''
+
+        # while (action != 'y' and action != 'n'):
+        #     action = str(raw_input(Texts.more_players_prompt))
 
     return selected
 
