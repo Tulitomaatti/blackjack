@@ -9,5 +9,7 @@
 26.9.   4h    Tiedostonkäsittelyjutut lisätty, korjattu suunnitteluvirheitä.
 29.9    2h    Koodikatselmointi
 2.10.    6h    Qt:n opettelua, jotta voi tehdä GUI:n. 
-3.10          UML opettelua, sekvenssikaavioita. Lisää Qt:n opettelua.
+3.10     8h   UML opettelua, sekvenssikaavioita. Lisää Qt:n opettelua.
               Uudistettu pelaajien käsittely. 
+
+              Pelaajien balanssin yms tallennus ei vielä implementoitu.
