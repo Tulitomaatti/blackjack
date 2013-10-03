@@ -7,3 +7,7 @@
 13.-22.9. 1h  Jotain ilmeisesti tein. Flunssaviikko.
 23.9.	0.5h  Pieniä korjailuja. 
 26.9.   4h    Tiedostonkäsittelyjutut lisätty, korjattu suunnitteluvirheitä.
+29.9    2h    Koodikatselmointi
+2.10.    6h    Qt:n opettelua, jotta voi tehdä GUI:n. 
+3.10          UML opettelua, sekvenssikaavioita. Lisää Qt:n opettelua.
+              Uudistettu pelaajien käsittely. 
