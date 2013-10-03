@@ -49,6 +49,7 @@ class Game(object):
 
             # bet = ui.get_bet_from_player
             # check negative or minimum bet here? 
+            
             bet = -1.0
             while (bet < 0):
                 bet = ui.get_bet(player)

@@ -6,6 +6,47 @@ from PySide.QtGui import *
 
 import sys
 
+
+class Boxlayout(QWidget):
+    def __init__(self): 
+        super(Boxlayout, self).__init__()
+
+        self.initUI()
+
+    def initUI(self):
+        butan = QPushButton('HITME')
+        diebutan = QPushButton('DIE PIE!')
+        mehbutan = QPushButton('meh :3')
+
+
+        diebutan.clicked.connect(QCoreApplication.instance().quit)
+
+
+        hbox = QHBoxLayout()
+
+        hbox.addStretch(1)
+        hbox.addWidget(butan)
+        hbox.addWidget(diebutan)
+
+        hbox2 = QHBoxLayout()
+        hbox2.addStretch(1)
+        hbox2.addWidget(mehbutan)
+        hbox2.addStretch(2)
+
+
+        vbox = QVBoxLayout()
+        vbox.addStretch(1)
+        vbox.addLayout(hbox2)
+        vbox.addStretch(1)
+        vbox.addLayout(hbox)
+
+
+        self.setLayout(vbox)
+
+        self.setGeometry(300,300,300,150)
+        self.show()
+
+
 if __name__ == '__main__':
     a = QApplication(sys.argv)
     w = Boxlayout()
@@ -16,44 +57,6 @@ if __name__ == '__main__':
 
 
 
-# class Boxlayout(QWidget):
-#     def __init__(self): 
-#         super(Boxlayout, self).__init__()
-
-#         self.initUI()
-
-#     def initUI(self):
-#         butan = QPushButton('HITME')
-#         diebutan = QPushButton('DIE PIE!')
-#         mehbutan = QPushButton('meh :3')
-
-
-#         diebutan.clicked.connect(QCoreApplication.instance().quit)
-
-
-#         hbox = QHBoxLayout()
-
-#         hbox.addStretch(1)
-#         hbox.addWidget(butan)
-#         hbox.addWidget(diebutan)
-
-#         hbox2 = QHBoxLayout()
-#         hbox2.addStretch(1)
-#         hbox2.addWidget(mehbutan)
-#         hbox2.addStretch(2)
-
-
-#         vbox = QVBoxLayout()
-#         vbox.addStretch(1)
-#         vbox.addLayout(hbox2)
-#         vbox.addStretch(1)
-#         vbox.addLayout(hbox)
-
-
-#         self.setLayout(vbox)
-
-#         self.setGeometry(300,300,300,150)
-#         self.show()
 
 
 # class abslayout(QWidget):

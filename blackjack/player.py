@@ -29,6 +29,17 @@ class Player(object):
         self.hand_list = []
         self.current_hand = 0
 
+        # for stats:
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
+        # balance will tell general status?
+
+        self.cards_got = 0
+
+        # maybe track amounts of each value got? or something other complex, like hand starting values. 
+        # self.cardthing 
+
     def __str__(self):
     	return self.name
 

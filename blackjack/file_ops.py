@@ -26,28 +26,11 @@ def save_it(obj, it):
     pickle.dump(obj, f)
     f.close()
 
-# This one is different. I couldn't figure out a nice way to read a single
-# player by name from a pickled file, so better just read all of them. 
+
 def read_players():
     """Reads a player list and returns it."""
 
-    try:
-        f = open('players' + BLACKJACK_FILE_EXTENSION, "rb")
-    except IOError(): 
-        print "Could not open players file for reading."
-        print "Players were not read."
-        return 
-    
-    players = []
-
-    while(True):
-        try:
-            players.append(pickle.load(f))
-        except EOFError:
-            break
-
-
-    f.close()
+    players = read_it('players')
     return players 
 
 
@@ -57,11 +40,16 @@ def save_game_stats(game):
     """Saves game stats to a file."""
     save_it(game.stats, 'stats')
 
-def save_player(player):
-    """Appends player info to a file. Player is stripped of all cards on saving."""
-    player.hand_list = []
-    player.current_hand = 0
-    save_it(player, 'players')
+def save_players(players):
+    """Writes players (list) to a file. Players are stripped of all cards on saving."""
+
+    # This might cause cards to disappear, 
+    # but hands should be empty at this point anyways.
+    for player in players:
+        player.hand_list = []
+        player.current_hand = 0
+
+    save_it(players, 'players')
 
 def save_rules(rules):
     """Saves rules to a file."""

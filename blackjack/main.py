@@ -7,7 +7,7 @@ import ui
 from ui import Texts as msg
 
 
-
+# Redo player logic to read players from a list / UI 
 def create_players(game, n_players):
     players = ui.get_players(n_players)
 
@@ -18,6 +18,7 @@ def create_players(game, n_players):
         game.players.append(p.Player(players[i]))
 
 
+# Should be moved to game.py ?
 def play_round(game):
 
     game.betting()
@@ -29,6 +30,7 @@ def play_round(game):
             while (not (r.busted(hand, game.rules) or hand.final_hand)):
 
                 ui.print_status(game)   
+                
                 action = ui.round_menu(player, hand)
 
                 if (action == 'h'):
