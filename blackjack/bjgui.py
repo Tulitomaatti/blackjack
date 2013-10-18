@@ -5,6 +5,8 @@ from PySide.QtGui import *
 
 import cardpackhand as cph
 import game as g
+import rules as r
+import file_ops as f
 
 import sys
 
@@ -68,6 +70,16 @@ class StatusArea(QWidget):
 
         self.setLayout(vbox)
 
+# QMessageBox does this kind of stuff already
+# class InfoDialog(QDialog):
+#     def __init__(self, str=""): 
+#         super(InfoDialog, self).__init__()
+#         label = QLabel(str)
+#         vbox = QVBoxLayout()
+#         vbox.addWidget(label)
+#         self.setLayout(vbox)
+#         self.show()
+
 class ActionController(QObject):
     def __init__(self, parent=None): 
         super(ActionController, self).__init__()
@@ -82,7 +94,10 @@ class ActionController(QObject):
 
     def new_game(self):
         sender = self.sender()
+        # First get us to the right view. 
         sender.parent().stack.setCurrentIndex(1)
+
+        
 
     def options(self):
         sender = self.sender()
@@ -93,16 +108,30 @@ class ActionController(QObject):
 
     def show_rules(self):
         # Pop up a dialog with rules in it.
-        pass
-
+        rules = r.Rules()
+        d = QMessageBox()
+        d.setText(str(rules))
+        d.exec_()
+        
     def show_stats(self):
         # Two listviews with players -> player stats
         # would be a rather cool way. 
 
         # Or a spreadsheet format with players on rows, sortable by a stat.
 
-        # For now: Print all stats to a texteditbox in a dialog.
-        pass
+        # For now: Print all stats to in a dialog.
+        # Probably results in horrible things when the player list gets long enough. 
+        # TODO: make the message area scrollable, with detailed_text or something else. 
+        statsstring = ""
+        players = f.read_players()
+
+        for plr in players:
+            statsstring += plr.name + "'s Stats: \n"
+            statsstring += str(plr.stats)
+        
+        d = QMessageBox()
+        d.setText(statsstring)
+        d.exec_()
 
 
 
@@ -247,7 +276,7 @@ class OptionsMenu(QWidget):
         super(OptionsMenu, self).__init__()
         self.ctl = ActionController()
 
-        option_stack = QStackedWidget(self)
+        # options_stack = QStackedWidget(self)
         # Two edged sword: connecting buttons is trickier.
 
         rules_button = QPushButton("Show Rules", self)
@@ -263,7 +292,19 @@ class OptionsMenu(QWidget):
         vbox.addWidget(stats_button)
         vbox.addWidget(back_button)
 
+        #options_stack.addWidget(vbox)
+
+        # stackbox = QVBoxLayout()
+        # stackbox.addWidget(options_stack)
         self.setLayout(vbox)
+
+# Maybe later
+# class RulesScreen(QWidget):
+#     pass
+# class StatsScreen(QWidget):
+#     pass
+
+
 
 class MainWindow(QMainWindow):
     def __init__(self): 
@@ -293,491 +334,3 @@ if __name__ == '__main__':
 
     a.exec_()
     sys.exit()
-
-
-# class Boxlayout(QWidget):
-#     def __init__(self):
-#         super(Boxlayout, self).__init__()
-        
-#         self.initUI()
-        
-#     def initUI(self):      
-#         a = QListView(self)
-#         model = QStandardItemModel()
-
-#         for i in xrange(10):
-#             item = QStandardItem()
-#             item.setText('aaaa' + str(i) + 'asdf') 
-
-#             item.setCheckable(True)
-
-#             model.appendRow(item)
-
-#         a.setModel(model)
-        
-
-#         self.show()
-
-
-
-
-
-
-
-# simple signal.
-    #     a = QPushButton('Butan 1', self)
-    #     a.move(30,50)
-
-    #     b = QPushButton('butan2', self)
-    #     b.move(150,50)
-
-       
-     
-
-
-    #     a.clicked.connect(self.buttonClicked)
-    #     b.clicked.connect(self.buttonClicked)  
-
-
-
-    #     self.show()
-
-    # def buttonClicked(self):
-
-    #     sender = self.sender()
-
-    #     self.statusBar().showMessage(sender.text() + ' prebbes.') 
-
-
-
-
-# # Simple way to handle key pressed event for a window:
-#     def keyPressEvent(self, e):
-#         if e.key() == Qt.Key_Escape:
-#             self.close()
-
-#more grid    
-        # title = QLabel('Title')
-        # author = QLabel('le maker')
-        # review = QLabel('arvosteldus')
-
-        # title_edit = QLineEdit()
-        # author_edit = QLineEdit()
-        # review_edit = QTextEdit()
-
-        # grid = QGridLayout()
-        # grid.setSpacing(10)
-
-        # grid.addWidget(title, 1, 0)
-        # grid.addWidget(title_edit, 1, 1)
-
-        # grid.addWidget(author, 2, 0)
-        # grid.addWidget(author_edit, 2, 1)
-
-        # grid.addWidget(review, 3,0)
-        # grid.addWidget(review_edit, 3,1, 5, 1)
-
-        # self.setLayout(grid)
-
-        # self.show()
-
-
-
-# # Grid layotu
-#         names = ['Cls', 'Bck', '', 'Close', '7', '8', '9', '/',
-#                 '4', '5', '6', '*', '1', '2', '3', '-',
-#                 '0', '.', '=', '+']
-
-#         grid = QGridLayout()
-
-#         j = i = 0
-
-#         pos = [(0, 0), (0, 1), (0, 2), (0, 3),
-#                 (1, 0), (1, 1), (1, 2), (1, 3),
-#                 (2, 0), (2, 1), (2, 2), (2, 3),
-#                 (3, 0), (3, 1), (3, 2), (3, 3),
-#                 (4, 0), (4, 1), (4, 2), (4, 3)]
-
-#         for i in names:
-#             button = QPushButton(i)
-#             if j == 2:
-#                 grid.addWidget(QLabel(''), 0, 2)
-#             else: 
-#                 grid.addWidget(button, pos[j][0], pos[j][1])
-#             j += 1
-
-#         self.setLayout(grid)
-#         self.setWindowTitle('lol calculador')
-#         self.show()
-
-# box lyaout
-
-        # butan = QPushButton('HITME')
-        # diebutan = QPushButton('DIE PIE!')
-        # mehbutan = QPushButton('meh :3')
-
-
-        # diebutan.clicked.connect(QCoreApplication.instance().quit)
-
-
-        # hbox = QHBoxLayout()
-
-        # hbox.addStretch(1)
-        # hbox.addWidget(butan)
-        # hbox.addWidget(diebutan)
-
-        # hbox2 = QHBoxLayout()
-        # hbox2.addStretch(1)
-        # hbox2.addWidget(mehbutan)
-        # hbox2.addStretch(2)
-
-
-        # vbox = QVBoxLayout()
-        # vbox.addStretch(1)
-        # vbox.addLayout(hbox2)
-        # vbox.addStretch(1)
-        # vbox.addLayout(hbox)
-
-
-        # self.setLayout(vbox)
-
-        # self.setGeometry(300,300,300,150)
-        # self.show()
-
-
-
-
-
-
-
-
-# class abslayout(QWidget):
-#     def __init__(self): 
-#         super(abslayout, self).__init__()
-#         self.initUI()
-
-#     def initUI(self):
-        
-#         l1 = QLabel('coding', self)
-#         l1.move(15,10)
-
-#         l2 = QLabel('cooooding more', self)
-#         l2.move(35,40)
-
-#         l3 = QLabel('for koodarens', self)
-#         l3.move(55,70)
-
-#         self.setGeometry(300,300,250,150)
-#         self.setWindowTitle('Absolute positioning.')
-#         self.show()
-
-
- #   class MainWindow(QMainWindow):
-#     def __init__(self): 
-#         super(MainWindow, self).__init__()
-#         self.initUI()
-
-#     def initUI(self):
-        
-#         editor = QTextEdit()
-        
-#         self.setCentralWidget(editor)
-
-#         exitAction = QAction('Exit', self)
-#         exitAction.setShortcut('Ctrl+6')
-#         exitAction.setStatusTip("I'll die if you click me.")
-#         exitAction.triggered.connect(self.close)
-
-#         self.statusBar()
-
-
-#         toolbar = self.addToolBar('Exit')
-#         toolbar.addAction(exitAction)
-
-
-#         menubar = QMenuBar(None)
-#     #    menubar.setMenuRole(0)
-
-
-#  # #       self.menubar = self.menuBar()
-
-#  #        file_menu = menubar.addMenu('&Filde')
-#  #        file_menu.addAction(exitAction)
-
- 
-
-#         menu = self.menuBar()
-#         filemenu = menu.addMenu('&File')
-
-#         #Prevent OS X from abducting the menu item:
-#         exitAction.setMenuRole(QAction.MenuRole.NoRole)
-
-#         filemenu.addAction(exitAction)
-#         foobarmenu = menu.addMenu('&Foobar')
-#         # menu.addMenu('&Quiche')
-        
-        
-
-
-#         self.setGeometry(100,500,400,300)
-#         self.show()
-
-
-# # not stylish: 
-
-# class MainWindow(QMainWindow):
-#     def __init__(self): 
-#         super(MainWindow, self).__init__()
-#         self.initUI()
-
-#     def initUI(self):
-#         # menus 
-
-
-#         exitAction = QAction(QIcon('lolcon.png'), '&ExAAAAit', self)
-
-#         # note the +. it's not a -. 
-#         exitAction.setShortcut('Ctrl+3')
-#         exitAction.setStatusTip('DESTROY ME FOREVER')
-#         exitAction.triggered.connect(self.close)
-
-#         # For some reason this fails on os x if '&File' is used. 
-#         menubar = self.menuBar()
-#         fileMenu = menubar.addMenu('&FAILle')
-#         fileMenu.addAction(exitAction)
-
-#         # toolbar... with an imaage
-#         self.toolbar = self.addToolBar('ExitNAU')
-#         self.toolbar.addAction(exitAction)
-
-
-
-#         # Do a status bar
-#         self.statusBar().showMessage('AAAAA IMMA EXPLODAN!')
-#         self.setGeometry(300,300,300,300)
-#         self.setWindowTitle('I haz cheezestatusbras. and menu.')
-
-
-#         # maybe add menus?<
-#         # This works on os x. the self. is needed for some reason. 
-#         self.help_menu = self.menuBar().addMenu('&File')
-
-#         self.show()
-
-
-
-# class MsgBox(QWidget):
-#     def __init__(self): 
-#         super(MsgBox, self).__init__()
-#         self.initUI()
-
-#     def initUI(self):
-#         self.setGeometry(300,300,300,200)
-#         self.setWindowTitle('Messageboxxxxx')
-#         self.show()
-
-#     def closeEvent(self, event):
-#         self.center()
-#         reply = QMessageBox.question(self, 'Messaaage', 'KILL ME NOW??!', QMessageBox.Yes | QMessageBox.Cancel | QMessageBox.No, QMessageBox.No)
-
-#         if reply == QMessageBox.Yes:
-#             event.accept()
-#         else:
-#             event.ignore()
-
-#     def center(self):
-#         qr = self.frameGeometry()
-#         cp = QDesktopWidget().availableGeometry().center()
-
-#         qr.moveCenter(cp)
-#         self.move(qr.topLeft())
-
-# class TooltipExample(QWidget):
-#     def __init__(self):
-#         super(TooltipExample, self).__init__()
-
-#         self.initUI()
-
-#     def initUI(self):
-#         QToolTip.setFont(QFont(u'SansSerif', 10))
-
-#         self.setToolTip(u'lol helppitek<b>stiä</b>')
-
-#         b = QPushButton(u'BUTHAAAN!', self)
-
-#         b.setToolTip(u'BUTHAAN IS A BOTHAAAN!')
-
-#         b.resize(b.sizeHint())
-#         b.move(50, 50)
-
-#         self.setGeometry(300,300, 250, 150)
-#         self.setWindowTitle(u'Jee tooltippejä')
-#         self.show()
-
-# class QuitButton(QWidget):
-#     def __init__(self): 
-#         super(QuitButton, self).__init__()
-
-#         self.initUI()
-
-#     def initUI(self):
-#         b = QPushButton('Quittaa', self)
-#         b.clicked.connect(QCoreApplication.instance().quit)
-#         b.resize(b.sizeHint())
-#         b.move(20,100)
-
-#         self.setGeometry(50,50, 500, 500)
-#         self.setWindowTitle('QUITTERUU AAAAAA!!!!')
-#         self.show()
-
-
-
-# if __name__ == '__main__':
-
-#     app = QApplication(sys.argv)
-#   #  ex = TooltipExample()
-#   #  ex2 = QuitButton()
-#   #  ex3 = MsgBox()
-#     ex4 = MainWindow()
-#     app.exec_()
-#     sys.exit()
-
-# # w = QWidget()
-
-
-# # w.resize(400,300)
-# # w.setWindowTitle('yeahhhh')
-
-# # vbox = QVBoxLayout()
-# # l = QLabel('Lolz!')
-
-# # vbox.addWidget(l)
-
-# # w.setLayout(vbox)
-
-# # w.show()
-
-
-# # sys.exit(app.exec_())
-
-# # Somecodelol.
-# # class MainWindow(QWidget):
-# #     def __init__(self):
-# #         QWidget.__init__(self, None)
-
-# #         vbox = QVBoxLayout()
-
-# #         slidea = QSlider(Qt.Horizontal)
-# #         slideb = QSlider(Qt.Horizontal)
-
-# #         vbox.addWidget(slidea)
-# #         vbox.addWidget(slideb)
-
-# #      #   self.connect(slidea, SIGNAL("valueChanged(int)"), slideb, SLOT("setValue(int)"))
-
-
-# #         slidea.valueChanged.connect(slideb.setValue)
-
-# #         self.setLayout(vbox)
-
-
-
-
-
-        # gamebox = GameArea()
-        # textbox = QTextEdit()
-
-
-
-        # #menubar
-        # menu = QMenuBar()
-
-        # # menu on menubar
-        # lolmenu = QMenu("Yeahhhhh", menu)
-        # menu.addMenu(lolmenu)
-
-        # # Define action
-        # lolaction = QAction("Lolwat", self)
-        # lolaction.setStatusTip("Some menu item you know?")
-        # lolaction.triggered.connect(self.close)
-
-        # # add action to a menu. 
-        # lolitem = lolmenu.addAction(lolaction)
- 
-        
-        # # create status bar
-        # status = QStatusBar()
-        # status.showMessage("Initial status message")
-        
-        # # Set the created stuff to main window. 
-        # self.setMenuBar(menu)
-        # self.setStatusBar(status)
-
-
-
-
-
-        # hit_button = QPushButton("Hit")
-        # double_button = QPushButton("Double")
-        # stand_button = QPushButton("Stand")
-        # split_button = QPushButton("Split")
-        # insurance_button = QPushButton("Insurance")
-
-        # # Make a layout for buttons
-        # buttons_layout = QHBoxLayout()
-        # buttons_layout.addWidget(hit_button)
-        # buttons_layout.addWidget(double_button)
-        # buttons_layout.addWidget(stand_button)
-        # # split & insurance not implemented yet.
-
-        # player_status = QLabel("Player status: ")
-        # dealer_status = QLabel("Dealer status: ")
-
-
-
-
-        # player_status = QLabel("Player status: ")
-        # dealer_status = QLabel("Dealer status: ")
-
-        # # Make layout for game area
-        # vbox = QVBoxLayout()
-        # vbox.addLayout(buttons_layout)
-        # vbox.addWidget
-
-
-        # self.setLayout(vbox)
-
-        # self.show()
-
-
-
-
-        # # # Layouts
-        # split = QHBoxLayout()
-        # split.addWidget(textbox)
-        # split.addWidget(gamebox)
-    
-
-        # self.setLayout(split)
-        # self.show()
-
-        # Init shit
-
-#         menu = self.menuBar()
-#         filemenu = menu.addMenu('&File')
-
-#         #Prevent OS X from abducting the menu item:
-#         exitAction.setMenuRole(QAction.MenuRole.NoRole)
-
-#         filemenu.addAction(exitAction)
-#         foobarmenu = menu.addMenu('&Foobar')
-#         # menu.addMenu('&Quiche')
-        
-
-
-# if __name__ == '__main__':
-#     application = QApplication(sys.argv)
-#     window = MainWindow()
-#     window.show()
-#     application.exec_()
-#     sys.exit()

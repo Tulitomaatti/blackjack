@@ -35,4 +35,6 @@ class PlayerStats(object):
         print "Times doubled:", self.times_doubled
         print
 
-
+    def __str__(self):
+        # Revising proper string operations might do wonders.
+        return "Wins: "+ str(self.wins) +"\nLosses: "+ str(self.losses) +"\nDraws: "+ str(self.draws) +"\nBusts: "+ str(self.busts) + "\nBlackjacks: "+ str(self.bjs) +"\nAverage bet: " + str(self.average_bet) + "\nCards Played: " + str(self.cards_played) + "\nHands played: "+ str(self.hands_played) +"\nTimes doubled: "+ str(self.times_doubled)+"\n" 
