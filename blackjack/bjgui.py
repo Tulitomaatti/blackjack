@@ -15,6 +15,17 @@ import file_ops as fops
 import sys
 
 
+#  _     _            _     _            _      
+# | |__ | | __ _  ___| | __(_) __ _  ___| | __  ____
+# | '_ \| |/ _` |/ __| |/ /| |/ _` |/ __| |/ / |___ \
+# | |_) | | (_| | (__|   < | | (_| | (__|   <    __) |
+# |_.__/|_|\__,_|\___|_|\__/ |\__,_|\___|_|\_\  |__ <
+#                        |__/  __ _ _  _(_)     ___) |
+#                             / _` | || | |    |____/
+#                             \__, |\_,_|_|
+#                             |___/
+                           
+
 class CardLabel(QLabel):
     def __init__(self, card): 
         super(CardLabel, self).__init__()
@@ -127,7 +138,7 @@ class ActionController(QObject):
             game.init_pack()
         game.shuffle_pack()
 
-        game.create_players()
+        game.create_players() # Deadline in 4.5 hours, i might make it to the end of the function.
         
         play_next_round = True
         while (play_next_round):
@@ -361,17 +372,18 @@ class MainWindow(QMainWindow):
 #         super(GetPlayerDialog, self).__int__()
 
 def get_players_for_game(players):
+    # Prepare for the same code reading _experience_ as in ui.py, except now
+    # with confusing Qt GUI stuff. 
+
     a = ""
     if not players:
-        players = []
-        #Create player dialog
-        # print "before looppan"
+        # players = [] # Was redundant because not players already makes sure that players == []
+      
+        # Create player dialog
         while a == "":
-            # print "entered looppan"
             a, ok = QInputDialog.getText(None, "New Player", "Enter name for new player: ")
             if not ok: sys.exit()
 
-        # print "left loop"
         #Append created player and return
         players.append(player.Player(a))
         fops.save_players(players)
@@ -397,48 +409,15 @@ def get_players_for_game(players):
             # dlg.NoButtons
             # a, choose = dlg.getText(None, "Choose player", plrs_string + "\n\n Enter player name: ")
 
-
             # This is why we can't have nice things ^
 
             # Dialog for getting a player name.
-            dl = QDialog()
 
-            # Widgets for the dialog
-            newplr = QPushButton("Create New Player")
-            chooseplr = QPushButton("Choose Existing Player")
-            line = QLineEdit()
-            label = QLabel("Available Players: ")
-            label2 = QLabel(plrs_string+ "\n")
-            label2.setAlignment(Qt.AlignTop)
-            label3 = QLabel("Enter player name:")
+            duplicate_player = False # Unused for now. 
+            name = ""
+            while name == "":
+                choose, name = get_player_name_dialog(plrs_string)
 
-            hbox = QHBoxLayout()
-            hbox.addWidget(newplr)
-            hbox.addStretch(1)
-            hbox.addWidget(chooseplr)
-
-            vbox = QVBoxLayout()
-            vbox.addWidget(label)
-            vbox.addWidget(label2)
-            vbox.addStretch(1)
-            vbox.addWidget(label3)
-            vbox.addWidget(line)
-            vbox.addLayout(hbox)
-
-            dl.setLayout(vbox)
-
-            name = QLabel() 
-            line.textChanged.connect(name.setText)
-
-            newplr.clicked.connect(dl.reject)
-            chooseplr.clicked.connect(dl.accept)
-
-    
-            choose = dl.exec_()
-            # 1 means we want to choose from existing players.
-            # 0 means we create a new player with the name.
-
-            duplicate_player = False # Unused for now.
             if not choose:
                 try: 
                     for plr in players:
@@ -446,16 +425,84 @@ def get_players_for_game(players):
                             duplicate_player = True
                             raise Exception("Duplicate Player Exception")
                             
-                except Exception:
+                except Exception: # yeahhh serious business error handling. 
                     print "Duplicate players will not be created."
+                    sys.exit()    # Originally i was planning to implement 
+                                  # Nice errors for cards running out and 
+                # Create player   # too small bets and whatnot. 
+                new_plr = player.Player(name)
+                players.append(new_plr)
+                fops.save_players(players)
+                selected = [new_plr]
+                return selected
+
+            else:
+                # Choose player
+                player_found = False
+                for plr in players:
+                    if plr.name == name:
+                        new_plr = plr
+                        player_found = True
+                        break
+                try:
+                    if not player_found: raise Exception("Player not found.")
+                except Exception:
+                    print "Player not found. Exiting."
                     sys.exit()
 
-            # Create player
-                
-            #
-        print "We selected player ", a
+                        # Only 1 player in gui version for now
+                selected = [new_plr]
+                return selected
+
         return players
-   
+
+
+def get_player_name_dialog(plrs_string):
+        dl = QDialog()
+
+        # Widgets for the dialog
+        newplr = QPushButton("Create New Player")
+        chooseplr = QPushButton("Choose Existing Player")
+        line = QLineEdit()
+        label = QLabel("Available Players: ")
+        label2 = QLabel(plrs_string+ "\n")
+        label2.setAlignment(Qt.AlignTop)
+        label3 = QLabel("Enter player name:")
+
+        hbox = QHBoxLayout()
+        hbox.addWidget(newplr)
+        hbox.addStretch(1)
+        hbox.addWidget(chooseplr)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(label)
+        vbox.addWidget(label2)
+        vbox.addStretch(1)
+        vbox.addWidget(label3)
+        vbox.addWidget(line)
+        vbox.addLayout(hbox)
+
+        dl.setLayout(vbox)
+
+        name = QLabel() 
+        line.textChanged.connect(name.setText)
+
+        newplr.clicked.connect(dl.reject)
+        chooseplr.clicked.connect(dl.accept)
+
+        choose = dl.exec_()
+        # 1 means we want to choose from existing players.
+        # 0 means we create a new player with the name.
+
+
+        return choose, name.text()  
+
+
+def get_bet(player):
+    ok, bet = QInputDialog().getInt(None, "Betting", "Enter Bet: ", 5, 0, 100, 5)
+    if not ok: sys.exit() # they came here to play, right?
+    return bet
+
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ import ui
 from ui import Texts as msg
 import bjgui as gui
 
-
+import pdb
 
 
 class Game(object):
@@ -64,6 +64,8 @@ class Game(object):
         print "got over plr seleciton."
         print "selected ", selected[0]
 
+ #       pdb.set_trace()
+
         for sel in selected:
             self.players.append(sel)
 
@@ -82,7 +84,7 @@ class Game(object):
 
     def play_round(self):
         self.betting()
-        self.deal()
+        self.deal() # remindererer
 
         for player in self.players:
             player.current_hand = 0
@@ -160,7 +162,7 @@ class Game(object):
                 if not self.GUI:
                     bet = ui.get_bet(player)
                 else:
-                    pass #do GUI relevant stuff. 
+                    bet = gui.get_bet(player)
 
             player.bet(bet)
 
