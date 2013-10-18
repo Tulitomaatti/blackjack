@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import cardpackhand
+# import cardpackhand
 
 class Player(object):
     """Represents a player, includes actions that a player may take.
@@ -29,16 +29,9 @@ class Player(object):
         self.hand_list = []
         self.current_hand = 0
 
-        # for stats:
-        self.wins = 0
-        self.losses = 0
-        self.draws = 0
-        # balance will tell general status?
-
-        self.cards_got = 0
-
-        # maybe track amounts of each value got? or something other complex, like hand starting values. 
-        # self.cardthing 
+        # for Stats:
+        self.stats = PlayerStats()
+ 
 
     def __str__(self):
     	return self.name
@@ -89,4 +82,22 @@ class HumanPlayer(Player):
     pass
 
 class AIPlayer(Player):
+    pass
+
+class PlayerStats(object):
+    def __init__(self): 
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
+        self.busts = 0
+        self.bjs = 0
+        self.average_bet = 0
+        self.cards_played = 0
+
+    def update_average_bet(self, bet):
+        games_played = self.wins+self.losses+self.draws
+        self.average_bet = (self.average_bet*games_played + bet) / (games_played+1)
+    # maybe track amounts of each value got? or something other complex, like hand starting values. 
+    # self.cardthing
+
     pass

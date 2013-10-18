@@ -41,8 +41,8 @@ class Game(object):
         self.players = []
 
 
-    def create_players(self, n_players):
-    # For now, n_players does nothing.
+    def create_players(self):
+
 
         players = f.read_players()
         selected = ui.get_players_for_game(players)
@@ -54,6 +54,9 @@ class Game(object):
 
         for sel in selected:
             self.players.append(sel)
+
+    def save_players(self):
+        pass
 
     def play_round(self):
 
@@ -97,6 +100,8 @@ class Game(object):
         ui.print_players(self)
 
         self.round_cleanup()
+
+        self.save_players()
 
 
 
@@ -150,7 +155,6 @@ class Game(object):
         """Pays winnings to each player."""
 
        # Maybe create functions like bustedPayout() and blackjackPayout()? 
-       # todo: have dealer collect lost bets.
 
         # For readability. 
         dealer_hand = self.dealer.hand_list[self.dealer.current_hand]
@@ -174,14 +178,16 @@ class Game(object):
 
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor
+                    self.dealer.balance -= hand.bet
 
                 elif (r.value(hand) == r.value(dealer_hand) and
                       self.rules.money_back_on_draw):
                     player.balance += hand.bet
                 else:
                     #hand lost. no payout needed, because bets are already taken when betting.
-                    pass
+                    self.dealer.balance += hand.bet
         
+
     def init_pack(self):
         """Generates the standard 52 cards and puts them in the pack in play."""
         for suit in c.suits:

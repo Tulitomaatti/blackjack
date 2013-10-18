@@ -14,30 +14,23 @@ def new_game():
 
     n_players = ui.new_game()
 
-
     # For now > 4. TODO : Check if we have enough cards coming to play.
     if (n_players > 4): raise Exception("Too many players.")
  
-
     game = g.Game()
 
     # Let's try with more packs. 
     for i in xrange(game.rules.number_of_packs):
         game.init_pack()
-
     game.shuffle_pack()
 
-    game.create_players(n_players)
+    game.create_players()
 
     play_next_round = True
 
     while (play_next_round):
         game.play_round()
-
-        # TODO Here: save players and game stats. 
-        # ..here, or in game.py?
-
-
+        # players are saved at the end of each round in game.py
 
         play_next_round = ui.play_next_round()
 
