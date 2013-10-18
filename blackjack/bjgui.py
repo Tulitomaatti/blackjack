@@ -216,9 +216,6 @@ class ActionController(QObject):
 
     # Game related functions 
 
-    def get_action(self, game):
-        sender = self.sender()
-        
 
         pass
 
@@ -327,6 +324,11 @@ class GameArea(QWidget):
         self.setWindowTitle('Blackjack')
     #   self.show()  
     
+        def get_action(self, game):
+        sender = self.sender()
+        loop = QEventLoop()
+        
+
 
     def update_area(self, game):
         # Update labels
