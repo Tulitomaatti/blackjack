@@ -72,6 +72,14 @@ class ActionController(object):
     def __init__(self, parent=None): 
         self.parent = parent
 
+    # Main menu stuff
+
+    def new_game(self, sender):
+        w = GameArea()
+
+
+    # Game related functions
+
     def hit(self):
         print "hitting"
 
@@ -86,6 +94,9 @@ class ActionController(object):
 
     def quit_to_menu(self):
         print "Quitting to main menu"
+
+    def exit_program(self):
+        sys.exit()
 
 class GameArea(QWidget):
     def __init__(self): 
@@ -111,6 +122,7 @@ class GameArea(QWidget):
         # Menus
 
         # Does GUI Code always end up looking this ugly? 
+        # See OptionsMenu for a more stylish way to init gazillion buttons.
 
         # Buttons 
         hit_button = QPushButton("Hit")
@@ -160,11 +172,83 @@ class GameArea(QWidget):
         # Finalizing stuff.
         self.setGeometry(80, 80, 300, 300)
         self.setWindowTitle('Blackjack')
-        self.show()  
+    #    self.show()  
+
+class MainMenu(QWidget):
+    def __init__(self): 
+        super(MainMenu, self).__init__()
+        self.ctl = ActionController()
+
+        header = QLabel("BLACKJACK")
+        f = self.font()
+        f.setPointSize(62)
+        header.setFont(f)
+
+        newgame_button = QPushButton("New Game")
+        options_button = QPushButton("Options")
+        exit_button = QPushButton("Exit")
+
+        f.setPointSize(20)
+        newgame_button.setFont(f)
+        options_button.setFont(f)
+        exit_button.setFont(f)
+
+        newgame_button.clicked.connect(self.ctl.new_game)
+
+        exit_button.clicked.connect(self.ctl.exit_program)
+        exit_button.setShortcut("Ctrl+x")
+
+
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(header)
+        vbox.addWidget(newgame_button)        
+        vbox.addWidget(options_button)
+        vbox.addWidget(exit_button)    
+
+        self.setLayout(vbox)
+        self.setWindowTitle('Blackjack')
+    #   self.show()
+
+class OptionsMenu(QWidget):
+    def __init__(self): 
+        super(OptionsMenu, self).__init__()
+        self.ctl = ActionController()
+
+        buttons =  [QPushButton("New Game"),
+                    QPushButton("Options"),
+                    QPushButton("Back")]
+
+        vbox = QVBoxLayout()
+        
+        for b in buttons: vbox.addWidget(b)
+
+        self.setLayout(vbox)
+
+class MainWindow(QMainWindow):
+    def __init__(self): 
+        super(MainWindow, self).__init__()
+
+        self.setCentralWidget(MainMenu())
+        self.show()
+
 
 if __name__ == '__main__':
     a = QApplication(sys.argv)
-    w = GameArea()
+    stack = QStackedWidget()
+
+    w = MainWindow()
+
+    # main_menu = MainMenu()
+    # game_area = GameArea()
+    # options_menu = OptionsMenu()
+
+    # stack.addWidget(main_menu)
+    # stack.addWidget(game_area)
+    # stack.addWidget(options_menu)
+    # stack.setCurrentIndex()
+    # stack.show()
+
     a.exec_()
     sys.exit()
 

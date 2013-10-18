@@ -163,7 +163,9 @@ def get_players_for_game(players):
                     fops.save_players(players)
                     selected.append(new_plr)
                     print "Player", new_plr, "created and selected."
-                    plr_selected = plr_created = True
+                    plr_selected = True
+               #    plr_created = True
+               #    Not used anywhere
                     action = ''
 
                 elif action == 'n':
