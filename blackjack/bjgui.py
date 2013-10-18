@@ -575,7 +575,8 @@ def show_game(game): # Actually dealer's first card should be kept hidden,
     game.game_area.update_area(game)
 
 
-def get_action(self, game):
+def get_action():
+    global actionhelper
     return actionhelper
 
     

@@ -99,16 +99,16 @@ class Game(object):
                          
                         gui.show_game(self)
 
-                        action = 0
-                        gui.actionhelper = 0   
+                        action = "x"
+                        gui.actionhelper = "x"   
                         # Get action... not really event-driven.
-                        while action == 0:  # Enter a new level of purkkakoodi
-                            action = gui.ctl.get_action()
+                        while action == "x":  # Enter a new level of purkkakoodi
+                            action = gui.get_action()
                             time.sleep(0.5)
+                            print action
 
                     else:   # CLUI action loop
                         ui.print_status(self)    
-
                         action = ui.round_menu(player, hand)
                     
                     if (action == 'h'):
