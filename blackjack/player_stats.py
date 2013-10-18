@@ -13,8 +13,11 @@ class PlayerStats(object):
         self.times_doubled = 0
 
     def update_average_bet(self, bet):
+        # This doesn't calculate correctly afaik. 
         games_played = self.wins+self.losses+self.draws
         self.average_bet = (self.average_bet*games_played + bet) / (games_played+1)
+   
+    # memo: 
     # maybe track amounts of each value got? or something other complex, like hand starting values. 
     # self.cardthing
 
