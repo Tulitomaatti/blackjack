@@ -15,7 +15,8 @@ import file_ops as fops
 import sys
 
 
-pointer = 0
+
+
 #  _     _            _     _            _      
 # | |__ | | __ _  ___| | __(_) __ _  ___| | __  ____
 # | '_ \| |/ _` |/ __| |/ /| |/ _` |/ __| |/ / |___ \
@@ -27,7 +28,7 @@ pointer = 0
 #                             |___/
               
 #hax         
-#globalgame = g.Game()
+actionhelper = 0
 
 class CardLabel(QLabel):
     def __init__(self, card): 
@@ -222,17 +223,24 @@ class ActionController(QObject):
 
 
     def hit(self):
-        print "hitting"
+        global actionhelper
+        actionhelper = 1
 
 
     def double(self):
         print "doubling"
+        global actionhelper
+        actionhelper = 2
 
     def stand(self):
         print "standing"
+        global actionhelper
+        actionhelper = 3
 
     def next_round(self):
         print "next round start please."
+        global actionhelper
+        actionhelper = 4
 
     def quit_to_menu(self):
         sender = self.sender()
@@ -323,11 +331,8 @@ class GameArea(QWidget):
         self.setGeometry(80, 80, 300, 300)
         self.setWindowTitle('Blackjack')
     #   self.show()  
-    
-        def get_action(self, game):
-        sender = self.sender()
-        loop = QEventLoop()
-        
+
+
 
 
     def update_area(self, game):
@@ -568,9 +573,12 @@ def show_game(game): # Actually dealer's first card should be kept hidden,
     # Get the game area widget somehow... or create one?
     game.game_area.update_area(game)
 
-# def get_action(game):
 
-#     pass
+def get_action(self, game):
+    loop = QEventLoop()
+    action = actionhelper
+    
+
  
 if __name__ == '__main__':
 

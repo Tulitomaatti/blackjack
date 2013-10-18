@@ -1,26 +1,34 @@
 blackjack
 =========
 
-blackjack card game, maybe with some features. 
+A simple blackjack card game with light statistics. All players are dealed 2 card in the beginning, the purpose is to get as close to 21 as possible without going over. King, Queen, and Jack count as 10 when calculating hand value. The player may request more cards or stop. A round will end when the dealer has a hand of at least 17 of value. 
 
-status: 
-- Core features (play a game) mostly work. 
-- File operations for saving stuff have been made but not in use yet. 
-- Text UI is ugly and only partly properly implemented.
-- No user/foolproofing has been done for the inputs.
-- Insufficient tests.
-- Missing features:
-    * Options
-    * Saving players/anything
-    * Stats
+Default minimum and maximum bets are 0 and 100 respectively. 
 
 
-usage: 
+Installation & Usage
+--------------------
 
-1. Run main.py
-2. Input n for a new game.
-3. Input number of players.
-4. Input player names.
-5. Input bets.
-6. Choose to 's'tand, 'h'it or 'd'ouble. 
-7. Win or lose, maybe play a new round? 
+* Install nose and pyside via pip. 
+* run main.py to use the Text UI, or bjgui.py to use the GUI.
+
+
+Known Bugs:
+-----------
+
+Text UI:
+
+Entering an empty string as a bet causes str->float conversion to fail and crash the program
+
+
+GUI:
+
+* Round actions aren't working
+
+
+Missing features:
+
+* Soft Aces
+* More than 1 player on GUI
+* Prettification of Text UI was sacrificed in order to have something that resembles a GUI. 
+

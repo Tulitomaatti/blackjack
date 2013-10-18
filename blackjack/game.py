@@ -99,7 +99,8 @@ class Game(object):
                         gui.show_game(self)
 
                         # Get action... not really event-driven.
-                        action = gui.get_action()
+                        while action == 0: 
+                            action = gui.ctl.get_action()
 
                     else:   # CLUI action loop
                         ui.print_status(self)    
