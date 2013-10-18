@@ -94,22 +94,21 @@ class Game(object):
             for hand in player.hand_list:
                 while (not (r.busted(hand, self.rules) or hand.final_hand)):
 
+                    action = ""
                     if self.GUI: # GUI Action loop.
                         # Show what we have. 
                          
+                        # Why does this get broken by the thing bl
                         gui.show_game(self)
 
-                        action = "x"
-                        gui.actionhelper = "x"   
-                        # Get action... not really event-driven.
-                        while action == "x":  # Enter a new level of purkkakoodi
-                            action = gui.get_action()
-                            time.sleep(0.5)
-                            print action
+                        while 1:
+                            time.sleep(5)
+
 
                     else:   # CLUI action loop
                         ui.print_status(self)    
                         action = ui.round_menu(player, hand)
+
                     
                     if (action == 'h'):
                         player.hit(self.pack)
@@ -124,6 +123,7 @@ class Game(object):
                         # ui.py should take care of never ending here.
                         print msg.unknown_action
 
+                    action = ""
                 player.current_hand += 1
 
         # Dealer plays
