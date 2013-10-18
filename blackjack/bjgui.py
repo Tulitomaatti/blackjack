@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
+# General pyside guideline from somewhere: 
+# Subclass everything and then do things with the new subclasses. 
+
 from PySide.QtCore import *
 from PySide.QtGui import *
 
 import cardpackhand as cph
 import game as g
 import rules as r
-import file_ops as f
+import player
+import file_ops as fops
 
 import sys
 
@@ -56,6 +60,16 @@ class CardArea(QFrame):
 
         self.setLayout(vbox)
 
+    def set_dealer_hand_label(hand):
+        self.dealer_label.setText("Dealer's hand: " + str(hand))
+        self.dealer_label.repaint()
+
+    def set_player_hand_label(hand):
+        self.player_label.setText("Player's hand: " + str(hand))
+        self.player_label.repaint()
+
+
+
 class StatusArea(QWidget):
     def __init__(self): 
         super(StatusArea, self).__init__()
@@ -69,6 +83,14 @@ class StatusArea(QWidget):
         vbox.addWidget(dealer_status)
 
         self.setLayout(vbox)
+
+    def set_dealer_status(status):
+        self.dealer_label.setText("Dealer status: " + status)
+        self.dealer_label.repaint()
+
+    def set_player_status(status):
+        self.player_label.setText("Player status: " + status)
+        self.player_label.repaint()
 
 # QMessageBox does this kind of stuff already
 # class InfoDialog(QDialog):
@@ -93,11 +115,27 @@ class ActionController(QObject):
         sender.parent().parent().setCurrentIndex(0)
 
     def new_game(self):
-        sender = self.sender()
         # First get us to the right view. 
+        sender = self.sender()
         sender.parent().stack.setCurrentIndex(1)
 
+        # Replicate what main.py does with gui magic. 
+        game = g.Game()
+        game.GUI = True
+
+        for i in xrange(game.rules.number_of_packs):
+            game.init_pack()
+        game.shuffle_pack()
+
+        game.create_players()
         
+        play_next_round = True
+        while (play_next_round):
+            game.play_round()
+            # players are saved at the end of each round in game.py
+
+            play_next_round = ui.play_next_round()
+
 
     def options(self):
         sender = self.sender()
@@ -123,7 +161,7 @@ class ActionController(QObject):
         # Probably results in horrible things when the player list gets long enough. 
         # TODO: make the message area scrollable, with detailed_text or something else. 
         statsstring = ""
-        players = f.read_players()
+        players = fops.read_players()
 
         for plr in players:
             statsstring += plr.name + "'s Stats: \n"
@@ -162,13 +200,15 @@ class GameArea(QWidget):
 
         self.initUI()
 
-        # We can now add cards to the table like this
-        self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(4, "heart")))
-        # card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(5, "gay")))
-        self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(45, "dragon")))
 
-        self.card_area.player_hand_layout.addWidget(CardLabel(cph.Card(3, "lol")))
-        # card_area.player_hand_layout.addWidget(CardLabel(cph.Card(6, "asdf")))
+        # For testing purposes: 
+        # # We can now add cards to the table like this
+        # self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(4, "heart")))
+        # # card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(5, "gay")))
+        # self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(45, "dragon")))
+
+        # self.card_area.player_hand_layout.addWidget(CardLabel(cph.Card(3, "lol")))
+        # # card_area.player_hand_layout.addWidget(CardLabel(cph.Card(6, "asdf")))
 
 
     def initUI(self):
@@ -314,6 +354,108 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(MainMenu())
         self.show()
+
+
+# class GetPlayerDialog(QInputDialog):
+#     def __init__(self): 
+#         super(GetPlayerDialog, self).__int__()
+
+def get_players_for_game(players):
+    a = ""
+    if not players:
+        players = []
+        #Create player dialog
+        # print "before looppan"
+        while a == "":
+            # print "entered looppan"
+            a, ok = QInputDialog.getText(None, "New Player", "Enter name for new player: ")
+            if not ok: sys.exit()
+
+        # print "left loop"
+        #Append created player and return
+        players.append(player.Player(a))
+        fops.save_players(players)
+
+        print 
+        return players
+    else: 
+        print "Players were found, should be a list here."
+        # available_string = "Available players: " + ''.join(' ', players)
+        plrs_string = ""
+        for plr in players:
+            plrs_string += plr.name + ', '
+
+
+        while a == "":
+            # Y U NOT WORK FOR ME ?!?!?
+            # dlg = QInputDialog()
+            # dlg.setCancelButtonText("Create New Player")
+            # dlg.setOkButtonText("adsfddsadfsds")
+            # dlg.setOption(QInputDialog.NoButtons)
+            # dlg.repaint()
+            # dlg.setTextValue(players[0].name)
+            # dlg.NoButtons
+            # a, choose = dlg.getText(None, "Choose player", plrs_string + "\n\n Enter player name: ")
+
+
+            # This is why we can't have nice things ^
+
+            # Dialog for getting a player name.
+            dl = QDialog()
+
+            # Widgets for the dialog
+            newplr = QPushButton("Create New Player")
+            chooseplr = QPushButton("Choose Existing Player")
+            line = QLineEdit()
+            label = QLabel("Available Players: ")
+            label2 = QLabel(plrs_string+ "\n")
+            label2.setAlignment(Qt.AlignTop)
+            label3 = QLabel("Enter player name:")
+
+            hbox = QHBoxLayout()
+            hbox.addWidget(newplr)
+            hbox.addStretch(1)
+            hbox.addWidget(chooseplr)
+
+            vbox = QVBoxLayout()
+            vbox.addWidget(label)
+            vbox.addWidget(label2)
+            vbox.addStretch(1)
+            vbox.addWidget(label3)
+            vbox.addWidget(line)
+            vbox.addLayout(hbox)
+
+            dl.setLayout(vbox)
+
+            name = QLabel() 
+            line.textChanged.connect(name.setText)
+
+            newplr.clicked.connect(dl.reject)
+            chooseplr.clicked.connect(dl.accept)
+
+    
+            choose = dl.exec_()
+            # 1 means we want to choose from existing players.
+            # 0 means we create a new player with the name.
+
+            duplicate_player = False # Unused for now.
+            if not choose:
+                try: 
+                    for plr in players:
+                        if plr.name == name:
+                            duplicate_player = True
+                            raise Exception("Duplicate Player Exception")
+                            
+                except Exception:
+                    print "Duplicate players will not be created."
+                    sys.exit()
+
+            # Create player
+                
+            #
+        print "We selected player ", a
+        return players
+   
 
 
 if __name__ == '__main__':

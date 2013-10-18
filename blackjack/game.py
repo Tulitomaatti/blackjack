@@ -6,6 +6,7 @@ import rules as r
 import file_ops as f
 import ui
 from ui import Texts as msg
+import bjgui as gui
 
 
 
@@ -49,12 +50,19 @@ class Game(object):
 
 
         players = f.read_players()
-        selected = ui.get_players_for_game(players)
+
+        if self.GUI:
+            selected = gui.get_players_for_game(players)
+        else: 
+            selected = ui.get_players_for_game(players)
 
     #    pdb.set_trace()
 
         # Check here if we have enough cards in play. 
         # For now just quit if more than 4 players D:
+
+        print "got over plr seleciton."
+        print "selected ", selected[0]
 
         for sel in selected:
             self.players.append(sel)
