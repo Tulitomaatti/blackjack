@@ -68,17 +68,45 @@ class StatusArea(QWidget):
 
         self.setLayout(vbox)
 
-class ActionController(object):
+class ActionController(QObject):
     def __init__(self, parent=None): 
+        super(ActionController, self).__init__()
         self.parent = parent
 
     # Main menu stuff
 
-    def new_game(self, sender):
-        w = GameArea()
+
+    def main_menu(self):
+        sender = self.sender()
+        sender.parent().parent().setCurrentIndex(0)
+
+    def new_game(self):
+        sender = self.sender()
+        sender.parent().stack.setCurrentIndex(1)
+
+    def options(self):
+        sender = self.sender()
+        sender.parent().stack.setCurrentIndex(2)
 
 
-    # Game related functions
+    # options specific
+
+    def show_rules(self):
+        # Pop up a dialog with rules in it.
+        pass
+
+    def show_stats(self):
+        # Two listviews with players -> player stats
+        # would be a rather cool way. 
+
+        # Or a spreadsheet format with players on rows, sortable by a stat.
+
+        # For now: Print all stats to a texteditbox in a dialog.
+        pass
+
+
+
+    # Game related functions 
 
     def hit(self):
         print "hitting"
@@ -93,7 +121,8 @@ class ActionController(object):
         print "next round start please."
 
     def quit_to_menu(self):
-        print "Quitting to main menu"
+        sender = self.sender()
+        sender.parent().parent().setCurrentIndex(0)
 
     def exit_program(self):
         sys.exit()
@@ -122,7 +151,8 @@ class GameArea(QWidget):
         # Menus
 
         # Does GUI Code always end up looking this ugly? 
-        # See OptionsMenu for a more stylish way to init gazillion buttons.
+        # See OptionsMenu for a slightly more
+        # stylish way to init gazillion buttons.
 
         # Buttons 
         hit_button = QPushButton("Hit")
@@ -175,18 +205,20 @@ class GameArea(QWidget):
     #    self.show()  
 
 class MainMenu(QWidget):
-    def __init__(self): 
+    def __init__(self, parent=None): 
         super(MainMenu, self).__init__()
         self.ctl = ActionController()
+        self.stack = parent
+        self.parent = parent
 
         header = QLabel("BLACKJACK")
         f = self.font()
         f.setPointSize(62)
         header.setFont(f)
 
-        newgame_button = QPushButton("New Game")
-        options_button = QPushButton("Options")
-        exit_button = QPushButton("Exit")
+        newgame_button = QPushButton("New Game", self)
+        options_button = QPushButton("Options", self)
+        exit_button = QPushButton("Exit", self)
 
         f.setPointSize(20)
         newgame_button.setFont(f)
@@ -194,11 +226,11 @@ class MainMenu(QWidget):
         exit_button.setFont(f)
 
         newgame_button.clicked.connect(self.ctl.new_game)
-
+        newgame_button.setShortcut("Ctrl+n")
+        options_button.clicked.connect(self.ctl.options)
+        options_button.setShortcut("Ctrl+o")
         exit_button.clicked.connect(self.ctl.exit_program)
         exit_button.setShortcut("Ctrl+x")
-
-
 
         vbox = QVBoxLayout()
         vbox.addWidget(header)
@@ -215,19 +247,29 @@ class OptionsMenu(QWidget):
         super(OptionsMenu, self).__init__()
         self.ctl = ActionController()
 
-        buttons =  [QPushButton("New Game"),
-                    QPushButton("Options"),
-                    QPushButton("Back")]
+        option_stack = QStackedWidget(self)
+        # Two edged sword: connecting buttons is trickier.
 
-        vbox = QVBoxLayout()
+        rules_button = QPushButton("Show Rules", self)
+        stats_button = QPushButton("Show Stats", self)
+        back_button = QPushButton("Back", self)
+
+        rules_button.clicked.connect(self.ctl.show_rules)
+        stats_button.clicked.connect(self.ctl.show_stats)
+        back_button.clicked.connect(self.ctl.main_menu)
         
-        for b in buttons: vbox.addWidget(b)
+        vbox = QVBoxLayout()
+        vbox.addWidget(rules_button)
+        vbox.addWidget(stats_button)
+        vbox.addWidget(back_button)
 
         self.setLayout(vbox)
 
 class MainWindow(QMainWindow):
     def __init__(self): 
         super(MainWindow, self).__init__()
+
+        #maybe init statusbar or something. 
 
         self.setCentralWidget(MainMenu())
         self.show()
@@ -237,17 +279,17 @@ if __name__ == '__main__':
     a = QApplication(sys.argv)
     stack = QStackedWidget()
 
-    w = MainWindow()
+    # w = MainWindow()
 
-    # main_menu = MainMenu()
-    # game_area = GameArea()
-    # options_menu = OptionsMenu()
+    main_menu = MainMenu(stack)
+    game_area = GameArea()
+    options_menu = OptionsMenu()
 
-    # stack.addWidget(main_menu)
-    # stack.addWidget(game_area)
-    # stack.addWidget(options_menu)
-    # stack.setCurrentIndex()
-    # stack.show()
+    stack.addWidget(main_menu)
+    stack.addWidget(game_area)
+    stack.addWidget(options_menu)
+   # stack.setCurrentIndex()
+    stack.show()
 
     a.exec_()
     sys.exit()
