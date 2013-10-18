@@ -118,5 +118,9 @@ class Hand(Pack):
 
         return hand_string
 
+    # The decision to move value of a hand to be handles by rules 
+    # was silly on retrospect. We could've had the value be calculated here,
+    # and maybe just consult rules while doing so. 
+
 
 

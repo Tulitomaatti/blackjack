@@ -15,16 +15,19 @@ import file_ops as fops
 import sys
 
 
+pointer = 0
 #  _     _            _     _            _      
 # | |__ | | __ _  ___| | __(_) __ _  ___| | __  ____
 # | '_ \| |/ _` |/ __| |/ /| |/ _` |/ __| |/ / |___ \
 # | |_) | | (_| | (__|   < | | (_| | (__|   <    __) |
 # |_.__/|_|\__,_|\___|_|\__/ |\__,_|\___|_|\_\  |__ <
 #                        |__/  __ _ _  _(_)     ___) |
-#                             / _` | || | |    |____/
-#                             \__, |\_,_|_|
+#  aka. functions all         / _` | || | |    |____/
+#       over the place        \__, |\_,_|_|
 #                             |___/
-                           
+              
+#hax         
+#globalgame = g.Game()
 
 class CardLabel(QLabel):
     def __init__(self, card): 
@@ -58,50 +61,74 @@ class CardArea(QFrame):
         self.dealer_hand_layout.setAlignment(Qt.AlignLeft)
         self.player_hand_layout.setAlignment(Qt.AlignLeft)
 
-        dealer_label = QLabel("Dealer's hand:")
-        player_label = QLabel("Player's hand:")
+        self.dealer_label = QLabel("Dealer's hand:")
+        self.player_label = QLabel("Player's hand:")
 
         vbox = QVBoxLayout()
 
-        vbox.addWidget(dealer_label)
+        vbox.addWidget(self.dealer_label)
         vbox.addLayout(self.dealer_hand_layout)
-        vbox.addWidget(player_label)
+        vbox.addWidget(self.player_label)
         vbox.addLayout(self.player_hand_layout)
 
 
         self.setLayout(vbox)
 
-    def set_dealer_hand_label(hand):
-        self.dealer_label.setText("Dealer's hand: " + str(hand))
+    def set_dealer_hand_label(self,hand):
+        self.dealer_label.setText("Dealer's hand value: " + str(hand))
         self.dealer_label.repaint()
 
-    def set_player_hand_label(hand):
-        self.player_label.setText("Player's hand: " + str(hand))
+    def set_player_hand_label(self, hand):
+        self.player_label.setText("Player's hand value: " + str(hand))
         self.player_label.repaint()
 
+    def update_cards(self, game):
+        dealer_hand = game.dealer.hand_list[0]
+        self.set_dealer_hand_label(str(r.value(dealer_hand))) 
+
+        plr = game.players[0] # GUI is single plr
+        plr_hand = plr.hand_list[plr.current_hand]
+        self.set_player_hand_label(str(r.value(plr_hand)))
+        self.repaint()
+
+        for card in dealer_hand.card_stack:
+            self.dealer_hand_layout.addWidget(CardLabel(card))
+
+        for card in plr_hand.card_stack:
+            self.player_hand_layout.addWidget(CardLabel(card))
+
+        self.show()
 
 
 class StatusArea(QWidget):
     def __init__(self): 
         super(StatusArea, self).__init__()
 
-        player_status = QLabel("Player status: ")
-        dealer_status = QLabel("Dealer status: ")
+        self.player_status = QLabel("Player status: ")
+        self.dealer_status = QLabel("Dealer status: ")
 
         vbox = QVBoxLayout()
 
-        vbox.addWidget(player_status)
-        vbox.addWidget(dealer_status)
+        vbox.addWidget(self.player_status)
+        vbox.addWidget(self.dealer_status)
 
         self.setLayout(vbox)
 
-    def set_dealer_status(status):
-        self.dealer_label.setText("Dealer status: " + status)
-        self.dealer_label.repaint()
+    def set_dealer_status(self, status):
+        self.dealer_status.setText("Dealer status: " + status)
+        self.dealer_status.repaint()
 
-    def set_player_status(status):
-        self.player_label.setText("Player status: " + status)
-        self.player_label.repaint()
+    def set_player_status(self, status):
+        self.player_status.setText("Player status: " + status)
+        self.player_status.repaint()
+
+    def update_status(self, game):
+        dealer_hand = game.dealer.hand_list[0]
+        self.set_dealer_status(str(dealer_hand) + ' (' + str(r.value(dealer_hand)) + ')') 
+
+        plr = game.players[0] # GUI is single plr
+        plr_hand = plr.hand_list[plr.current_hand]
+        self.set_player_status(str(plr_hand) + ' (' + str(r.value(plr_hand)) + ')')
 
 # QMessageBox does this kind of stuff already
 # class InfoDialog(QDialog):
@@ -129,9 +156,12 @@ class ActionController(QObject):
         # First get us to the right view. 
         sender = self.sender()
         sender.parent().stack.setCurrentIndex(1)
-
+        game_area = sender.parent().stack.widget(1) # This single line took me like 2.5 hours to figure out. 
+                                                    # ^ I had trouble getting hold of the game_area handle.
         # Replicate what main.py does with gui magic. 
-        game = g.Game()
+        # Dirty...
+        game = g.Game(game_area) # I desperately need a handle to that game_area.
+        #game = globalgame
         game.GUI = True
 
         for i in xrange(game.rules.number_of_packs):
@@ -186,8 +216,17 @@ class ActionController(QObject):
 
     # Game related functions 
 
+    def get_action(self, game):
+        sender = self.sender()
+        
+
+        pass
+
+
+
     def hit(self):
         print "hitting"
+
 
     def double(self):
         print "doubling"
@@ -227,6 +266,7 @@ class GameArea(QWidget):
         self.ctl = ActionController(self)
         self.card_area = CardArea()
         self.status = StatusArea()
+        self.action = ""
 
         # Menus
 
@@ -249,6 +289,9 @@ class GameArea(QWidget):
         stand_button.clicked.connect(self.ctl.stand)
         next_round_button.clicked.connect(self.ctl.next_round)
         quit_to_menu_button.clicked.connect(self.ctl.quit_to_menu)
+
+        # Test
+        hit_button.clicked.connect(self.get_action)
 
         # Create and set layouts for buttons and cards. 
         action_buttons_layout = QHBoxLayout()
@@ -282,7 +325,20 @@ class GameArea(QWidget):
         # Finalizing stuff.
         self.setGeometry(80, 80, 300, 300)
         self.setWindowTitle('Blackjack')
-    #    self.show()  
+    #   self.show()  
+    
+
+    def update_area(self, game):
+        # Update labels
+        self.status.update_status(game)
+        self.card_area.update_cards(game)
+        self.card_area.dealer_label.repaint()
+        self.card_area.player_label.repaint()
+
+        # Remove any cards
+
+        # Draw cards
+
 
 class MainMenu(QWidget):
     def __init__(self, parent=None): 
@@ -498,28 +554,42 @@ def get_player_name_dialog(plrs_string):
         return choose, name.text()  
 
 
+
+
 def get_bet(player):
     ok, bet = QInputDialog().getInt(None, "Betting", "Enter Bet: ", 5, 0, 100, 5)
     if not ok: sys.exit() # they came here to play, right?
     return bet
 
+def show_game(game): # Actually dealer's first card should be kept hidden,
+                           # and only revealed when the round ends. 
+    # Get the game area widget somehow... or create one?
+    game.game_area.update_area(game)
 
+# def get_action(game):
 
+#     pass
+ 
 if __name__ == '__main__':
+
     a = QApplication(sys.argv)
     stack = QStackedWidget()
 
     # w = MainWindow()
 
-    main_menu = MainMenu(stack)
     game_area = GameArea()
+
+    main_menu = MainMenu(stack)
+
     options_menu = OptionsMenu()
 
     stack.addWidget(main_menu)
     stack.addWidget(game_area)
     stack.addWidget(options_menu)
-   # stack.setCurrentIndex()
+    # stack.setCurrentIndex()
     stack.show()
 
     a.exec_()
     sys.exit()
+
+    

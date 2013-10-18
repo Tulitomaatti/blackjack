@@ -30,7 +30,7 @@ class Game(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, game_area):
 
         self.rules = r.Rules()
         self.pack = c.Pack()
@@ -44,6 +44,7 @@ class Game(object):
 
         # There should be a better way. see if-elses later on. 
         self.GUI = False
+        self.game_area = game_area 
 
 
     def create_players(self):
@@ -86,23 +87,25 @@ class Game(object):
         self.betting()
         self.deal() # remindererer
 
+
         for player in self.players:
             player.current_hand = 0
             for hand in player.hand_list:
                 while (not (r.busted(hand, self.rules) or hand.final_hand)):
 
-                    if not self.GUI:
-                        ui.print_status(self)   
-                    else:
-                        pass #do GUI relevant stuff. 
-                    
-                    if not self.GUI:
+                    if self.GUI: # GUI Action loop.
+                        # Show what we have. 
+                         
+                        gui.show_game(self)
+
+                        # Get action... not really event-driven.
+                        action = gui.get_action()
+
+                    else:   # CLUI action loop
+                        ui.print_status(self)    
+
                         action = ui.round_menu(player, hand)
-                    else:
-                        pass #do GUI relevant stuff. 
-
-
-
+                    
                     if (action == 'h'):
                         player.hit(self.pack)
 
