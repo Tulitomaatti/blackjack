@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
 import pickle
+import sys
 
 BLACKJACK_FILE_EXTENSION = '.bj'
 
 def read_it(it):
     try:
         f = open(it + BLACKJACK_FILE_EXTENSION, "rb")
-    except IOError():
+    except IOError:
         print "Could not open", it, "file for reading."
         print it, "was not read."
+        print "Trying to create an empty", it
+        return -1
+
 
     obj = pickle.load(f)
     f.close()
@@ -31,6 +35,22 @@ def read_players():
     """Reads a player list and returns it."""
 
     players = read_it('players')
+    if players == -1:
+        try:
+            f = open('players' + BLACKJACK_FILE_EXTENSION, "wb")
+            players = []
+            pickle.dump(players, f)
+            f.close()
+            print "Created an empty players file."
+            return players 
+
+        except IOError:
+            print "Could not create players file."
+            print "Exiting."
+            sys.abort()
+
+
+
     return players 
 
 

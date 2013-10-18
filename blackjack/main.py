@@ -7,6 +7,7 @@ import file_ops as f
 import ui
 from ui import Texts as msg
 
+import pdb
 
 # Redo player logic to read players from a list / UI 
 def create_players(game, n_players):
@@ -14,6 +15,8 @@ def create_players(game, n_players):
 
     players = f.read_players()
     selected = ui.get_players_for_game(players)
+
+    pdb.set_trace()
 
     # Check here if we have enough cards in play. 
     # For now just quit if more than 4 players D:

@@ -15,7 +15,7 @@ class Texts(object):
     create_new_player_prompt = "Create new player with the name? (y / n)"
     player_already_selected = "Player has already been selected."
     remove_player_from_selection = "Remove player from selection? (y / n)"
-    more_players_prompt = "Add more players? (y / n)"
+    more_players_prompt = "Add more players? (y / n) "
 
     new_game = """Starting a new game."""
     new_round = """New round."""
@@ -104,6 +104,27 @@ def get_players_for_game(players):
         plr_created = False
         aux_plr = p.Player(name)
 
+
+        if players == []: #copypasta code incoming
+            print Texts.player_not_found
+
+            action = str(raw_input(Texts.create_new_player_prompt))
+
+        #    pdb.set_trace()
+
+            if action == 'y':
+                new_plr = p.Player(name)
+                players.append(new_plr)
+                fops.save_players(players)
+                selected.append(new_plr)
+                print "Player", new_plr, "created and selected."
+                plr_selected = plr_created = True
+                action = ''
+
+            elif action == 'n':
+                break
+
+
         for plr in players:
             if plr_selected: break
 
@@ -132,6 +153,8 @@ def get_players_for_game(players):
                 print Texts.player_not_found
 
                 action = str(raw_input(Texts.create_new_player_prompt))
+
+     #           pdb.set_trace()
 
                 if action == 'y':
                     new_plr = p.Player(name)
