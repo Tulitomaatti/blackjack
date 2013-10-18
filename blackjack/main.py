@@ -3,7 +3,7 @@
 import game as g
 #import player as p
 import rules as r
-#import file_ops as f
+import file_ops as f
 import ui
 from ui import Texts as msg
 
@@ -36,9 +36,16 @@ def new_game():
 
 
 def options():
-    if (ui.options() == 'r'):
+    action = ui.options()
+    if (action == 'r'):
         print r.Rules()
-    else:
+    elif (action == 's'):
+        players = f.read_players()
+
+        for plr in players:
+            print "Stats for", plr
+            plr.stats.print_stats()
+    else:  
         pass
 
 

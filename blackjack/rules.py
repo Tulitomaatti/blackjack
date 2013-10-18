@@ -20,6 +20,7 @@ class Rules(object):
         self.win_blackjack_factor = 1.5
         self.hand_max_value = 21
         self.number_of_packs = 4
+        self.max_bet = 100
 
     def __str__(self):
         # This could be also done by some fancy dir(obj) iterating but... yeah. 
@@ -28,7 +29,8 @@ class Rules(object):
             "Win payout factor: " + str(self.win_payout_factor),
             "Blackjack win payout factor: "+ str(self.win_blackjack_factor),
             "Maximum hand value: "+ str(self.hand_max_value), 
-            "Number of packs used: " + str(self.number_of_packs)])
+            "Number of packs used: " + str(self.number_of_packs),
+            "Maximum bet:" + str(self.max_bet)])
 
 
 def value(hand):

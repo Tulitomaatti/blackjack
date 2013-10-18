@@ -1,22 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# Going through zetcode tutorials before doing anything real for the blackjack.
-
-# For blackjack: 
-
-# A QPixMap in a QLabel could be used for images/cards.
-# label.setPixmap(pixmap)
-
-# QPushButton for hit/stand/double connected to suitable actions.
-
-# Dialog with a QLineEdit for getting new player names. 
-# QListView for existing players
-
-# Menus... for menus. Not much there anyways. 
-
-
-
-
 from PySide.QtCore import *
 from PySide.QtGui import *
 
@@ -46,16 +29,12 @@ class CardLabel(QLabel):
         self.setFrameStyle(QFrame.Box | QFrame.Raised)
         self.setLineWidth(2)
 
-    #    self.setSizePolicy(QSizePolicy())
         self.setFixedSize(100,150)
 
 
 class CardArea(QFrame):
     def __init__(self): 
         super(CardArea, self).__init__()
-
-
-        foo = CardLabel(cph.Card(8, "spade"))
 
         self.dealer_hand_layout = QHBoxLayout()
         self.player_hand_layout = QHBoxLayout()
@@ -66,6 +45,7 @@ class CardArea(QFrame):
         player_label = QLabel("Player's hand:")
 
         vbox = QVBoxLayout()
+
         vbox.addWidget(dealer_label)
         vbox.addLayout(self.dealer_hand_layout)
         vbox.addWidget(player_label)
@@ -74,13 +54,14 @@ class CardArea(QFrame):
 
         self.setLayout(vbox)
 
-
 class StatusArea(QWidget):
     def __init__(self): 
         super(StatusArea, self).__init__()
-        vbox = QVBoxLayout()
+
         player_status = QLabel("Player status: ")
         dealer_status = QLabel("Dealer status: ")
+
+        vbox = QVBoxLayout()
 
         vbox.addWidget(player_status)
         vbox.addWidget(dealer_status)
@@ -112,15 +93,26 @@ class GameArea(QWidget):
 
         self.initUI()
 
-    # def controller(self):
-    #     sys.exit()
+        # We can now add cards to the table like this
+        self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(4, "heart")))
+        # card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(5, "gay")))
+        self.card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(45, "dragon")))
+
+        self.card_area.player_hand_layout.addWidget(CardLabel(cph.Card(3, "lol")))
+        # card_area.player_hand_layout.addWidget(CardLabel(cph.Card(6, "asdf")))
+
 
     def initUI(self):
-
+        # Major areas / components
         self.ctl = ActionController(self)
-        card_area = CardArea()
-        status = StatusArea()
+        self.card_area = CardArea()
+        self.status = StatusArea()
 
+        # Menus
+
+        # Does GUI Code always end up looking this ugly? 
+
+        # Buttons 
         hit_button = QPushButton("Hit")
         double_button = QPushButton("Double")
         stand_button = QPushButton("Stand")
@@ -129,13 +121,14 @@ class GameArea(QWidget):
         # split_button = QPushButton("Split", self)
         # insurance_button = QPushButton("Insurance", self)
 
+        # Connects to action controller
         hit_button.clicked.connect(self.ctl.hit)
         double_button.clicked.connect(self.ctl.double)
         stand_button.clicked.connect(self.ctl.stand)
         next_round_button.clicked.connect(self.ctl.next_round)
         quit_to_menu_button.clicked.connect(self.ctl.quit_to_menu)
 
-
+        # Create and set layouts for buttons and cards. 
         action_buttons_layout = QHBoxLayout()
         action_buttons_layout.addWidget(hit_button)
         action_buttons_layout.addWidget(double_button)
@@ -148,38 +141,26 @@ class GameArea(QWidget):
         menu_buttons_layout.addStretch(1)
 
         card_area_layout = QHBoxLayout()
-        card_area_layout.addWidget(card_area)
+        card_area_layout.addWidget(self.card_area)
         card_area_layout.addStretch(1)
 
-    #    quit_to_menu_button.hide()
+      # quit_to_menu_button.hide()
         next_round_button.setEnabled(False)
-
 
         vbox = QVBoxLayout()
 
         vbox.addLayout(card_area_layout)
         vbox.addLayout(action_buttons_layout)
-        vbox.addWidget(status)
+        vbox.addWidget(self.status)
         vbox.addLayout(menu_buttons_layout)
-
         vbox.addStretch(1)
 
         self.setLayout(vbox)
 
+        # Finalizing stuff.
         self.setGeometry(80, 80, 300, 300)
-
-
-        # We can now add cards to the table 
-        card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(4, "heart")))
-        # card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(5, "gay")))
-        card_area.dealer_hand_layout.addWidget(CardLabel(cph.Card(45, "dragon")))
-
-        card_area.player_hand_layout.addWidget(CardLabel(cph.Card(3, "lol")))
-        # card_area.player_hand_layout.addWidget(CardLabel(cph.Card(6, "asdf")))
-
         self.setWindowTitle('Blackjack')
-        self.show()
-        
+        self.show()  
 
 if __name__ == '__main__':
     a = QApplication(sys.argv)

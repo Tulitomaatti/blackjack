@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # import cardpackhand
 
+import player_stats
+
 class Player(object):
     """Represents a player, includes actions that a player may take.
 
@@ -30,7 +32,7 @@ class Player(object):
         self.current_hand = 0
 
         # for Stats:
-        self.stats = PlayerStats()
+        self.stats = player_stats.PlayerStats()
  
 
     def __str__(self):
@@ -40,6 +42,7 @@ class Player(object):
         return (self.name == other.name)
 
     def __ne__(self, other):
+        # __eq__() doesn't implicitly define this :(
         return (self.name != other.name)
 
     def bet(self, bet, handIndex=0):
@@ -47,16 +50,19 @@ class Player(object):
         # Should negative bets be prevented here, in game, or in ui? 
         self.balance -= bet
         self.hand_list[self.current_hand].bet += bet
+        self.stats.update_average_bet(bet)
 
 
     def stand(self, hand):
     	"""Finish playing this hand for this round."""
         hand.final_hand = True
+        self.stats.hands_played += 1
 
 
     def hit(self, pack):
     	"""Request a card from the dealer."""
         self.hand_list[self.current_hand].put_card(pack.draw_card())
+        self.stats.cards_played += 1
 
     def double(self, pack):
     	"""Get one final card from the dealer and double the hand's bet."""
@@ -64,6 +70,7 @@ class Player(object):
         #self.hand_list[self.current_hand].put_card(pack.draw_card())
         self.hit(pack)
         self.hand_list[self.current_hand].final_hand = True
+        self.stats.times_doubled += 1
         
 
     def split(self):
@@ -84,20 +91,3 @@ class HumanPlayer(Player):
 class AIPlayer(Player):
     pass
 
-class PlayerStats(object):
-    def __init__(self): 
-        self.wins = 0
-        self.losses = 0
-        self.draws = 0
-        self.busts = 0
-        self.bjs = 0
-        self.average_bet = 0
-        self.cards_played = 0
-
-    def update_average_bet(self, bet):
-        games_played = self.wins+self.losses+self.draws
-        self.average_bet = (self.average_bet*games_played + bet) / (games_played+1)
-    # maybe track amounts of each value got? or something other complex, like hand starting values. 
-    # self.cardthing
-
-    pass

@@ -35,13 +35,14 @@ class Texts(object):
     options_menu = """Blackjack - Options
 
     show (r)ules
+    show (s)tats
     """
     
 
 class Actions(object):
     round_actions = "hsd"
     main_menu_actions = "noq"
-    option_actions = "r"
+    option_actions = "rs"
 
     # This seems like a tautology
     valid_round_actions = list(round_actions)
@@ -174,48 +175,6 @@ def get_players_for_game(players):
             action = str(raw_input(Texts.more_players_prompt))
 
 
-        # 
-        # # Find the player we requested.
-        # for player in players:
-        #     if player.name == name:
-
-        #         # Check if the player is already selected 
-        #         for selected_player in selected:
-        #             if selected_player.name == player.name:
-        #                 print Texts.player_already_selected
-        #                 action = str(raw_input(Texts.remove_player_from_selection))
-
-        #                 if action == 'y':
-        #                     # Remove player from selection
-        #                     # selected[] would create a new list. [:] assigns in place.
-        #                     selected[:] = [plr for plr in selected if not plr.name == name]
-        #                     action = ''
-        #                     n -= 1
-        #                     continue
-        #                 else: action = ''
-
-        #         # Otherwise just append the player
-        #         selected.append(player)
-        #         print "Added player", player.name
-        #         n += 1
-        
-
-        # # If no player was added, maybe create one?
-        # if len(selected) != n:
-        #     print Texts.player_not_found
-        #     action = str(raw_input(Texts.create_new_player_prompt))
-        #     if action == 'y':
-        #         new_player = p.Player(name)
-        #         players.append(new_player)
-        #         fops.save_players(players)
-
-        #         selected.append(new_player)
-        #         n += 1
-        #     else: action = ''
-
-        # while (action != 'y' and action != 'n'):
-        #     action = str(raw_input(Texts.more_players_prompt))
-
     return selected
 
 
@@ -236,7 +195,10 @@ def options():
         return action
 
 def get_bet(player):
+    rules = r.Rules()
     bet = float(raw_input(player.name + ", Enter bet: "))
+    while bet > rules.max_bet:
+        bet = get_bet(player)
 
     # TODO something about negative bets here
     return bet

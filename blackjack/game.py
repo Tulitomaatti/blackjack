@@ -41,6 +41,10 @@ class Game(object):
         self.players = []
 
 
+        # There should be a better way. see if-elses later on. 
+        self.GUI = False
+
+
     def create_players(self):
 
 
@@ -56,10 +60,19 @@ class Game(object):
             self.players.append(sel)
 
     def save_players(self):
-        pass
+        old_players = f.read_players()
+        new_players = self.players
+
+        for plr in new_players:
+            for update_me in old_players:
+                if plr.name == update_me.name:
+                    update_me.balance = plr.balance
+                    update_me.stats = plr.stats
+                    break
+
+        f.save_players(old_players)
 
     def play_round(self):
-
         self.betting()
         self.deal()
 
@@ -68,9 +81,17 @@ class Game(object):
             for hand in player.hand_list:
                 while (not (r.busted(hand, self.rules) or hand.final_hand)):
 
-                    ui.print_status(self)   
+                    if not self.GUI:
+                        ui.print_status(self)   
+                    else:
+                        pass #do GUI relevant stuff. 
                     
-                    action = ui.round_menu(player, hand)
+                    if not self.GUI:
+                        action = ui.round_menu(player, hand)
+                    else:
+                        pass #do GUI relevant stuff. 
+
+
 
                     if (action == 'h'):
                         player.hit(self.pack)
@@ -90,18 +111,27 @@ class Game(object):
         # Dealer plays
         while (r.value(self.dealer.hand_list[0]) < self.rules.dealer_hand_min_value):
             self.dealer.hit(self.pack)
-            ui.print_status(self)
+
+            if not self.GUI:
+                ui.print_status(self)
+            else:
+                pass #do GUI relevant stuff. 
+
+ 
 
         self.payout()
 
         self.discard_cards_in_play()
 
         # Here until nicer UI. 
-        ui.print_players(self)
-
-        self.round_cleanup()
+        if not self.GUI:
+            ui.print_status(self)
+        else:
+            pass #do GUI relevant stuff. 
 
         self.save_players()
+
+        self.round_cleanup()
 
 
 
@@ -119,7 +149,10 @@ class Game(object):
             
             bet = -1.0
             while (bet < 0):
-                bet = ui.get_bet(player)
+                if not self.GUI:
+                    bet = ui.get_bet(player)
+                else:
+                    pass #do GUI relevant stuff. 
 
             player.bet(bet)
 
@@ -150,6 +183,7 @@ class Game(object):
 
                 finally:
                     plr.hand_list[plr.current_hand].put_card(card)
+                    plr.stats.cards_played += 1
 
     def payout(self):
         """Pays winnings to each player."""
@@ -165,8 +199,10 @@ class Game(object):
                     # Draw doesn't get checked here, has to be moved.
                     player.balance += hand.bet
                     player.balance += hand.bet * self.rules.win_blackjack_factor
+                    player.stats.bjs += 1
 
                 elif (r.busted(hand, self.rules)):
+                    player.stats.busts += 1
                     if (r.busted(dealer_hand, self.rules) and self.rules.money_back_on_draw):
                         player.balance += hand.bet
                     else:
@@ -176,16 +212,21 @@ class Game(object):
                 elif (r.value(hand) > r.value(dealer_hand) or
                       r.busted(dealer_hand, self.rules)):
 
+                    player.stats.wins += 1
+
                     player.balance += hand.bet
                     player.balance += hand.bet*self.rules.win_payout_factor
                     self.dealer.balance -= hand.bet
 
                 elif (r.value(hand) == r.value(dealer_hand) and
                       self.rules.money_back_on_draw):
+
+                    player.stats.draws += 1
                     player.balance += hand.bet
                 else:
                     #hand lost. no payout needed, because bets are already taken when betting.
                     self.dealer.balance += hand.bet
+                    player.stats.losses += 1
         
 
     def init_pack(self):
