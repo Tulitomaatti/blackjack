@@ -28,7 +28,7 @@ import sys
 #                             |___/
               
 #hax         
-actionhelper = 0
+actionhelper = ""
 
 class CardLabel(QLabel):
     def __init__(self, card): 
@@ -223,24 +223,25 @@ class ActionController(QObject):
 
 
     def hit(self):
+        print "hitting"
         global actionhelper
-        actionhelper = 1
+        actionhelper = "h"
 
 
     def double(self):
         print "doubling"
         global actionhelper
-        actionhelper = 2
+        actionhelper = "d"
 
     def stand(self):
         print "standing"
         global actionhelper
-        actionhelper = 3
+        actionhelper = "s"
 
     def next_round(self):
         print "next round start please."
         global actionhelper
-        actionhelper = 4
+        actionhelper = "n"
 
     def quit_to_menu(self):
         sender = self.sender()
@@ -296,7 +297,7 @@ class GameArea(QWidget):
         quit_to_menu_button.clicked.connect(self.ctl.quit_to_menu)
 
         # Test
-        hit_button.clicked.connect(self.get_action)
+        #hit_button.clicked.connect(self.get_action)
 
         # Create and set layouts for buttons and cards. 
         action_buttons_layout = QHBoxLayout()
@@ -575,8 +576,8 @@ def show_game(game): # Actually dealer's first card should be kept hidden,
 
 
 def get_action(self, game):
-    loop = QEventLoop()
-    action = actionhelper
+    return actionhelper
+
     
 
  
