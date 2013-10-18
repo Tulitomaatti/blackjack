@@ -1,73 +1,13 @@
 # -*- coding: utf-8 -*- 
 
 import game as g
-import player as p
+#import player as p
 import rules as r
-import file_ops as f
+#import file_ops as f
 import ui
 from ui import Texts as msg
 
-import pdb
-
-# Redo player logic to read players from a list / UI 
-def create_players(game, n_players):
-    # For now, n_players does nothing.
-
-    players = f.read_players()
-    selected = ui.get_players_for_game(players)
-
-    pdb.set_trace()
-
-    # Check here if we have enough cards in play. 
-    # For now just quit if more than 4 players D:
-
-    for sel in selected:
-        game.players.append(sel)
-
-
-# Should be moved to game.py ?
-def play_round(game):
-
-    game.betting()
-    game.deal()
-
-    for player in game.players:
-        player.current_hand = 0
-        for hand in player.hand_list:
-            while (not (r.busted(hand, game.rules) or hand.final_hand)):
-
-                ui.print_status(game)   
-                
-                action = ui.round_menu(player, hand)
-
-                if (action == 'h'):
-                    player.hit(game.pack)
-
-                elif (action == 'd'):
-                    player.double(game.pack)
-
-                elif (action == 's'):
-                    player.stand(hand)
-
-                else:
-                    # ui.py should take care of never ending here.
-                    print msg.unknown_action
-
-            player.current_hand += 1
-
-    # Dealer plays
-    while (r.value(game.dealer.hand_list[0]) < game.rules.dealer_hand_min_value):
-        game.dealer.hit(game.pack)
-        ui.print_status(game)
-
-    game.payout()
-
-    game.discard_cards_in_play()
-
-    # Here until nicer UI. 
-    ui.print_players(game)
-
-    game.round_cleanup()
+#import pdb
 
 def new_game():
     print msg.new_game
@@ -87,14 +27,17 @@ def new_game():
 
     game.shuffle_pack()
 
-    create_players(game, n_players)
+    game.create_players(n_players)
 
     play_next_round = True
 
     while (play_next_round):
-        play_round(game)
+        game.play_round()
 
         # TODO Here: save players and game stats. 
+        # ..here, or in game.py?
+
+
 
         play_next_round = ui.play_next_round()
 

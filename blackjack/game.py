@@ -3,7 +3,11 @@
 import cardpackhand as c
 import player as p
 import rules as r
+import file_ops as f
 import ui
+from ui import Texts as msg
+
+
 
 
 class Game(object):
@@ -35,6 +39,64 @@ class Game(object):
         self.dealer.hand_list.append(c.Hand())
        
         self.players = []
+
+
+    def create_players(self, n_players):
+    # For now, n_players does nothing.
+
+        players = f.read_players()
+        selected = ui.get_players_for_game(players)
+
+    #    pdb.set_trace()
+
+        # Check here if we have enough cards in play. 
+        # For now just quit if more than 4 players D:
+
+        for sel in selected:
+            self.players.append(sel)
+
+    def play_round(self):
+
+        self.betting()
+        self.deal()
+
+        for player in self.players:
+            player.current_hand = 0
+            for hand in player.hand_list:
+                while (not (r.busted(hand, self.rules) or hand.final_hand)):
+
+                    ui.print_status(self)   
+                    
+                    action = ui.round_menu(player, hand)
+
+                    if (action == 'h'):
+                        player.hit(self.pack)
+
+                    elif (action == 'd'):
+                        player.double(self.pack)
+
+                    elif (action == 's'):
+                        player.stand(hand)
+
+                    else:
+                        # ui.py should take care of never ending here.
+                        print msg.unknown_action
+
+                player.current_hand += 1
+
+        # Dealer plays
+        while (r.value(self.dealer.hand_list[0]) < self.rules.dealer_hand_min_value):
+            self.dealer.hit(self.pack)
+            ui.print_status(self)
+
+        self.payout()
+
+        self.discard_cards_in_play()
+
+        # Here until nicer UI. 
+        ui.print_players(self)
+
+        self.round_cleanup()
 
 
 
