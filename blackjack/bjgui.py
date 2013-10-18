@@ -13,7 +13,7 @@ import player
 import file_ops as fops
 
 import sys
-import time
+
 
 
 
@@ -575,78 +575,11 @@ def show_game(game): # Actually dealer's first card should be kept hidden,
     game.game_area.update_area(game)
 
 
-def get_action_dialog(plrs_string):
-        dl = QDialog()
-
-        # Widgets for the dialog
-        newplr = QPushButton("Ok")
-        # chooseplr = QPushButton("Choose Existing Player")
-        line = QLineEdit()
-        # label = QLabel("Available Players: ")
-        # label2 = QLabel(plrs_string+ "\n")
-       # label2.setAlignment(Qt.AlignTop)
-        label3 = QLabel("Enter action: \nh for Hit\nd for double\ns for stand.")
-
-        hbox = QHBoxLayout()
-        hbox.addWidget(newplr)
-      #  hbox.addStretch(1)
-     #   hbox.addWidget(chooseplr)
-
-        vbox = QVBoxLayout()
-    #    vbox.addWidget(label)
-     #   vbox.addWidget(label2)
-    #    vbox.addStretch(1)
-        vbox.addWidget(label3)
-        vbox.addWidget(line)
-        vbox.addLayout(hbox)
-
-        dl.setLayout(vbox)
-
-        name = QLabel() 
-        line.textChanged.connect(name.setText)
-
-        newplr.clicked.connect(dl.accept)
-    #    chooseplr.clicked.connect(dl.accept)
-
-        choose = dl.exec_()
-        # 1 means we want to choose from existing players.
-        # 0 means we create a new player with the name.
-
 def get_action():
-    # global actionhelper
-    # return actionhelper
-    # didn't work without having the sleep in a sepearate thread.
+    global actionhelper
+    return actionhelper
 
-    # dial = QDialog()
-    # #Let's just dialog instead. 
-    # hitb = QPushButton("Hit")
-    # doubleb = QPushButton("Double")
-    # standb = QPushButton("Stand")
-
-    # label = QLabel("Choose your action: ")
-
-
-    # hbox2 = QHBoxLayout()
-    # hbox2.addWidget(hitb)
-    # hbox2.addWidget(doubleb)
-    # hbox2.addWidget(standb)
-
-    # dial.setLayout(hbox2) 
-
-    # hitb.clicked.connect(dial.accept)
-    # doubleb.clicked.connect(dial.setResult(4))
-    # standb.clicked.connect(dial.rejected)
-
-    # choose = dial.exec_()
-
-    # choose, retval = get_action_dialog("a")
-    # return retval
-    loop = QEventLoop()
-    loop.exec_()
-
-
-
-
+    
 
  
 if __name__ == '__main__':
